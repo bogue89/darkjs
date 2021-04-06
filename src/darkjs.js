@@ -2,7 +2,7 @@ import create from './domelements.js';
 import colorjs from './color.js';
 import './darkjs.css';
 
-function main(element) {  
+function darkem(element) {  
   var levels = { 'bg': {}, 'color': {}};
   var n;
   n = 1;
@@ -15,27 +15,37 @@ function main(element) {
     levels['color'][level] = n;
     n += 1;
   });
-  darkem(element, levels);
+  darkemWithLevels(element, levels);
 }
-function darkem(element, levels) {
+function darkemWithLevels(element, levels) {
   const backgroundColor = colorjs(element.getStyle('background-color'));
   const color = colorjs(element.getStyle('color'));
   
   if(hasColor(backgroundColor) && !isDark(backgroundColor)) {
     const level = levels.bg[colorLevel(backgroundColor)];
     element
-      .addClass('darkjs-bg')
+      .addClass('darkjs')
       .addClass('darkjs-bg-'+level);
   }
   if(hasColor(color) && isDark(color)) {
     const level = levels.color[colorLevel(color)];
     element
-    .addClass('darkjs-color')
+    .addClass('darkjs')
     .addClass('darkjs-color-'+level);
   }
   const childs = element.children;
   for(var i=0; i<childs.length; i++) {
-    darkem(childs[i], levels);
+    darkemWithLevels(childs[i], levels);
+  }
+}
+function darkemnt(element) {
+  const clss = element.className.match(/darkjs-[\w\-]+/g) || [];
+  for(var c=0; c<clss.length; c++) {
+    element.removeClass(clss[c]);
+  }
+  const childs = element.querySelectorAll ('[class*=darkjs-]') || [];
+  for(var i=0; i<childs.length; i++) {
+    darkemnt(childs[i]);
   }
 }
 function bgLevels(element) {
@@ -53,7 +63,6 @@ function bgLevels(element) {
 function colorLevels(element) {
   var levels = [];
   const color = colorjs(element.getStyle('color'));
-  console.log(color);
   if(hasColor(color) && isDark(color)) {
     levels.push(colorLevel(color));
   }
@@ -72,4 +81,4 @@ function hasColor(color) {
 function isDark(color) {
   return color.alpha > 0.3 && color.lightness < 0.7;
 }
-export default main;
+export default {darkem, darkemnt};

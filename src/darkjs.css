@@ -1,43 +1,42 @@
-.darkjs-bg {
-    background: black;
-    transition: background .3s ease;
+.darkjs {
+    transition: background-color .3s linear, color .3s linear;
 }
 .darkjs-bg-1 {
-    background: #000;
+    background: #000 !important;
 }
 .darkjs-bg-2 {
-    background: #222;
+    background: #222 !important;
 }
 .darkjs-bg-3 {
-    background: #333;
+    background: #333 !important;
 }
 .darkjs-bg-4 {
-    background: #444;
+    background: #444 !important;
 }
 .darkjs-bg-5 {
-    background: #555;
+    background: #555 !important;
 }
 .darkjs-bg-6 {
-    background: #666;
+    background: #666 !important;
 }
 .darkjs-color {
-    color: white;
+    color: white !important;
 }
 .darkjs-color-1 {
-    color: #fff;
+    color: #fff !important;
 }
 .darkjs-color-2 {
-    color: #eee;
+    color: #eee !important;
 }
 .darkjs-color-3 {
-    color: #ddd;
+    color: #ddd !important;
 }
 .darkjs-color-4 {
-    color: #ccc;
+    color: #ccc !important;
 }
 .darkjs-color-5 {
-    color: #bbb;
+    color: #bbb !important;
 }
 .darkjs-color-6 {
-    color: #aaa;
+    color: #aaa !important;
 }

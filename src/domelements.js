@@ -11,7 +11,6 @@ function element(selector) {
         element.className = classes.join('').replace(/\./g, ' ').trim();
     }
     if(attributes) {
-
         attributes.forEach((attribute) => {
             var attr = attribute.replace(/\[|\]/g, '').split('='); 
             element.setAttribute(attr[0], attr[1] || "");
@@ -91,8 +90,8 @@ Element.prototype.addText = function(html) {
     this.innerHTML = this.innerHTML + html;
     return this;
 }
-Element.prototype.on = function(event, listener, options) {
-    this.addEventListener(event, listener, options);
+Element.prototype.on = function(event, listener, useCapture) {
+    this.addEventListener(event, listener.bind(this), useCapture);
     return this;
 }
 Element.prototype.styles = null;

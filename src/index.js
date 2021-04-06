@@ -1,9 +1,8 @@
 import './style.css';
 
 import create from './domelements.js';
-import darkem from './darkjs.js';
+import darkjs from './darkjs.js';
 import previews from './code_previews';
-
 
 function footer() {
   return create('footer.fixed-bottom.text-center')
@@ -38,7 +37,15 @@ function card() {
       .insert(create('button.btn.btn-info[type=button]')
         .setText("Demo")
         .on('click', (e) => {
-          darkem(document.body);
+          if(document.body.isDark) {
+            document.body.isDark = false;
+            darkjs.darkemnt(document.body);
+            e.srcElement.setText('Demo');
+          } else {
+            document.body.isDark = true;
+            darkjs.darkem(document.body);
+            e.srcElement.setText('Undo');
+          }
         })
       )
     );    

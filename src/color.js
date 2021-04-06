@@ -7,7 +7,6 @@ class Color {
     this.alpha = hsla.alpha;
   }
 }
-
 Color.prototype.toHsl = function () {
   return "hsl(" + (this.hue || 0) + ", " + Math.round(this.sat * 100) + "%, " + Math.round(this.lightness * 100) + "%)";
 }
