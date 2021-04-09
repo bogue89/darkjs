@@ -90,8 +90,8 @@ Element.prototype.addText = function(html) {
     this.innerHTML = this.innerHTML + html;
     return this;
 }
-Element.prototype.on = function(event, listener, useCapture) {
-    this.addEventListener(event, listener.bind(this), useCapture);
+Element.prototype.on = function(event, callback, useCapture) {
+    this.addEventListener(event, callback.bind(this), useCapture);
     return this;
 }
 Element.prototype.styles = null;

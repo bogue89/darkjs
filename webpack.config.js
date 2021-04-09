@@ -12,7 +12,6 @@ module.exports = {
     darkjs: './src/index.dark.js',
   },
   devtool: 'inline-source-map',
-  //watch: true,
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Darktheme',
