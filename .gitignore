@@ -1,5 +1,6 @@
 dev
 dist
+demo
 libs
 node_modules
 .DS_Store

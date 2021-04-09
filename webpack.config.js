@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const options = {
   publicPath: '',
 };
@@ -8,6 +9,7 @@ module.exports = {
   mode: 'development',
   entry: {
     index: './src/index.js',
+    darkjs: './src/index.dark.js',
   },
   devtool: 'inline-source-map',
   //watch: true,
@@ -16,9 +18,10 @@ module.exports = {
       title: 'Darktheme',
     }),
     new WebpackManifestPlugin(options),
+    new MiniCssExtractPlugin()
   ],
   output: {
-    filename: '[name].bundle.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
   },
@@ -26,7 +29,7 @@ module.exports = {
     rules: [
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
