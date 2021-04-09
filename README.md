@@ -4,9 +4,11 @@ darkjs
 A dark theme style conversion with js import using webpack as dev environment.
 
 ## Quick start
+
 Looking to create a dark theme option for websites. This projects aims to offer a script you can just import on the `<head>` tag with no configuration.
 
 ### JS
+
 The final script is not ready but im working on the implementation being something like:
 
     <head>
