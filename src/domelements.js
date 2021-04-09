@@ -94,6 +94,7 @@ Element.prototype.on = function(event, callback, useCapture) {
     this.addEventListener(event, callback.bind(this), useCapture);
     return this;
 }
+Window.prototype.on = Element.prototype.on;
 Element.prototype.styles = null;
 Element.prototype.getStyle = function(prop) {
   if(!this.styles) {
