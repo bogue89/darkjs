@@ -1,6 +1,6 @@
 import create from './domelements.js';
 import colorjs from './color.js';
-import './darkjs.css';
+import darkjscss from './darkjs.css';
 
 function darkem(element) {  
   var levels = { 'bg': {}, 'color': {}};

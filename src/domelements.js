@@ -8,7 +8,7 @@ function element(selector) {
         element.id = id.join('').replace('#', '');
     }
     if(classes) {
-        element.className = classes.join('').replace(/\./g, ' ').trim();
+        element.setClass(classes.join('').replace(/\./g, ' ').trim());
     }
     if(attributes) {
         attributes.forEach((attribute) => {
@@ -18,18 +18,24 @@ function element(selector) {
     }
     return element;
 }
+Element.prototype.setClass = function (cls) {
+    return this.setAttribute("class", cls || "");
+}
+Element.prototype.getClass = function () {
+    return this.getAttribute("class") || "";
+}
 Element.prototype.hasClass = function (cls) {
-    return !!this.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
+    return !!this.getClass().match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
 }
 Element.prototype.addClass = function (cls) {
     if(!this.hasClass(cls)) {
-        this.className = (this.className+" "+cls).trim();
+        this.setClass((this.getClass()+" "+cls).trim());
     }
     return this;
 }
 Element.prototype.removeClass = function (cls) {
     var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
-    this.className=this.className.replace(reg,' ').trim();
+    this.setClass(this.getClass().replace(reg,' ').trim());
     return this;
 }
 Element.prototype.create = function(html) {

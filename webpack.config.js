@@ -5,13 +5,11 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const options = {
   publicPath: '',
 };
-module.exports = {
+var config = {
   mode: 'development',
   entry: {
     index: './src/index.js',
-    darkjs: './src/index.dark.js',
-  },
-  devtool: 'inline-source-map',
+  },  
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Darktheme',
@@ -40,4 +38,14 @@ module.exports = {
       },
     ],
   },
+};
+
+module.exports = (env, argv) => {
+  if (argv.mode === 'development') {
+    config.devtool = 'source-map';
+  }
+  if (argv.mode === 'production') {
+    config.entry.darkjs = './src/index.dark.js';
+  }
+  return config;
 };
