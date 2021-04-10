@@ -1,7 +1,7 @@
 import './style.css';
 
-import create from './domelements.js';
-import darkjs from './darkjs.js';
+import create from './elements.js';
+import Darkjs from './darkjs.js';
 import previews from './code_previews';
 
 function footer() {
@@ -37,15 +37,11 @@ function card() {
       .insert(create('button.btn.btn-info[type=button]')
         .setText("Demo")
         .on('click', (e) => {
-          if(document.body.isDark) {
-            document.body.isDark = false;
-            darkjs.darkemnt(document.body);
-            e.srcElement.setText('Demo');
-          } else {
-            document.body.isDark = true;
-            darkjs.darkem(document.body);
-            e.srcElement.setText('Undo');
+          if(!window.darkjs) {
+            window.darkjs = new Darkjs(document.body);
           }
+          window.darkjs.toggle();
+          e.srcElement.setText(window.darkjs.isDark ? 'Undo':'Demo');
         })
       )
     );    

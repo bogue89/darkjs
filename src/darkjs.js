@@ -1,84 +1,93 @@
-import create from './domelements.js';
+import create from './elements.extensions.js';
 import colorjs from './color.js';
 import darkjscss from './darkjs.css';
 
-function darkem(element) {  
-  var levels = { 'bg': {}, 'color': {}};
-  var n;
-  n = 1;
-  (new Set(bgLevels(element).sort((a,b) => b - a))).forEach((level) => {
-    levels['bg'][level] = n;
-    n += 1;
-  });
-  n = 1;
-  (new Set(colorLevels(element).sort((a,b) => a - b))).forEach((level) => {
-    levels['color'][level] = n;
-    n += 1;
-  });
-  darkemWithLevels(element, levels);
+class Darkjs {
+  constructor(element) {
+    this.root = element;
+    this.isDark = false;
+    this.levels = null;
+    this.tree = null;
+    this.className = "darkjs";
+  }
+  getLevels() {
+    this.levels = {};
+    var n = 1;
+    (new Set(this.getLevelForElement(this.root).sort((a,b) => b - a))).forEach((level) => {
+      this.levels[level] = n;
+      n += 1;
+    });
+  }
+  getLevelForElement(element) {
+    var levels = [];
+    var color;
+    color = colorjs(element.getStyle('background-color'));
+    if(this.hasColor(color) && !this.isDarkColor(color)) {
+      levels.push(this.colorLevel(color));
+    }
+    color = colorjs(element.getStyle('color'));
+    if(this.hasColor(color) && this.isDarkColor(color)) {
+      levels.push(this.colorLevel(color));
+    }
+    const childs = element.children;
+    for(var i=0; i<childs.length; i++) {
+      levels = levels.concat(this.getLevelForElement(childs[i]));
+    }
+    return levels;
+  }
+  setLevelsToElement(element) {
+    var color;
+    color = colorjs(element.getStyle('background-color'));
+    if(this.hasColor(color) && !this.isDarkColor(color)) {
+      const level = this.levels[this.colorLevel(color)];
+      element
+      .addClass(this.className)
+      .addClass(this.className+'-bg-'+level);
+    }
+    color = colorjs(element.getStyle('color'));
+    if(this.hasColor(color) && this.isDarkColor(color)) {
+      const level = this.levels[this.colorLevel(color)];
+      element
+      .addClass(this.className)
+      .addClass(this.className+'-color-'+level);
+    }
+    const childs = element.children;
+    for(var i=0; i<childs.length; i++) {
+      this.setLevelsToElement(childs[i]);
+    }
+  }
+  removeClassToElement(element) {
+    element.removeClassMatching(this.className+"-[\\w\-]+");
+    const childs = element.querySelectorAll ('[class*='+this.className+'-]') || [];
+    for(var i=0; i<childs.length; i++) {
+      this.removeClassToElement(childs[i]);
+    }
+  }
+  darkem() {
+    this.getLevels();
+    this.setLevelsToElement(this.root);
+    this.isDark = true;
+    console.log(this.levels);
+  }
+  darkemnt() {
+    this.removeClassToElement(this.root);
+    this.isDark = false;
+  }
+  toggle() {
+    if(this.isDark) {
+      this.darkemnt();
+    } else {
+      this.darkem();
+    }
+  }
+  colorLevel(color) {
+    return Math.round(color.lightness * 100) || 0;
+  }
+  hasColor(color) {
+    return color.alpha > 0;
+  }
+  isDarkColor(color) {
+    return color.alpha > 0.3 && color.lightness < 0.7;
+  }
 }
-function darkemWithLevels(element, levels) {
-  const backgroundColor = colorjs(element.getStyle('background-color'));
-  const color = colorjs(element.getStyle('color'));
-  
-  if(hasColor(backgroundColor) && !isDark(backgroundColor)) {
-    const level = levels.bg[colorLevel(backgroundColor)];
-    element
-      .addClass('darkjs')
-      .addClass('darkjs-bg-'+level);
-  }
-  if(hasColor(color) && isDark(color)) {
-    const level = levels.color[colorLevel(color)];
-    element
-    .addClass('darkjs')
-    .addClass('darkjs-color-'+level);
-  }
-  const childs = element.children;
-  for(var i=0; i<childs.length; i++) {
-    darkemWithLevels(childs[i], levels);
-  }
-}
-function darkemnt(element) {
-  const clss = element.className.match(/darkjs-[\w\-]+/g) || [];
-  for(var c=0; c<clss.length; c++) {
-    element.removeClass(clss[c]);
-  }
-  const childs = element.querySelectorAll ('[class*=darkjs-]') || [];
-  for(var i=0; i<childs.length; i++) {
-    darkemnt(childs[i]);
-  }
-}
-function bgLevels(element) {
-  var levels = [];
-  const color = colorjs(element.getStyle('background-color'));
-  if(hasColor(color) && !isDark(color)) {
-    levels.push(colorLevel(color));
-  }
-  const childs = element.children;
-  for(var i=0; i<childs.length; i++) {
-    levels = levels.concat(bgLevels(childs[i]));
-  }
-  return levels;
-}
-function colorLevels(element) {
-  var levels = [];
-  const color = colorjs(element.getStyle('color'));
-  if(hasColor(color) && isDark(color)) {
-    levels.push(colorLevel(color));
-  }
-  const childs = element.children;
-  for(var i=0; i<childs.length; i++) {
-    levels = levels.concat(colorLevels(childs[i]));
-  }
-  return levels;
-}
-function colorLevel(color) {
-  return Math.round(color.lightness * 100) || 0;
-}
-function hasColor(color) {
-  return color.alpha > 0;
-}
-function isDark(color) {
-  return color.alpha > 0.3 && color.lightness < 0.7;
-}
-export default {darkem, darkemnt};
+export default Darkjs;
