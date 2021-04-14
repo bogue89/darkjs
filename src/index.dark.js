@@ -1,6 +1,9 @@
-import create from './domelements.js';
-import darkjs from './darkjs.js';
+import create from './elements.js';
+import Darkjs from './darkjs.js';
 
 window.on('load', function() {
-    darkjs.darkem(document.body);
+    setTimeout(function() {
+        window.darkjs = new Darkjs(document.querySelector('body'));
+        window.darkjs.darkem();
+    }, 1000)
 });

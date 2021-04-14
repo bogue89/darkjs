@@ -1,4 +1,4 @@
-import './elements.js';
+import './elements.extensions.js';
 function element(selector) {
     const tag = selector.replace(/^(\w+).*/i,"$1");
     const element = document.createElement(tag);

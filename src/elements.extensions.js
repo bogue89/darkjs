@@ -94,4 +94,23 @@ Element.prototype.getStyle = function(prop) {
     this.styles = window.getComputedStyle(this, null);
   }
   return this.styles.getPropertyValue(prop);
-};
+}
+Element.prototype.getPath = function() {
+  if(this.id!=='') {
+    return '#'+this.id;
+  }
+  if (this===document.body) {
+    return this.tagName.toLowerCase();
+  }
+  var n = 1;
+  var siblings= this.parentNode.childNodes;
+  for (var i= 0; i<siblings.length; i++) {
+    var sibling= siblings[i];
+    if (sibling===this) {
+      return this.parentNode.getPath()+' > '+this.tagName.toLowerCase()+':nth-child('+n+')';
+    }
+    if (sibling.nodeType===1 && sibling.tagName===this.tagName) {
+      n += 1;
+    }
+  }
+}

@@ -17,7 +17,7 @@ function greeting() {
   return create('div.greetings')
     .insert(create('h1')
       .setText('Dark.js')
-    ).insert(create('p')
+    ).insert(create('p.lead')
       .setText("Allow your users to navigate on a dark themed version of your website.")
     ).insert(create('button.btn.btn-primary[type=button]')
       .setHtml('<i class="fab fa-githun"></i> Download on Github')
@@ -38,7 +38,7 @@ function card() {
         .setText("Demo")
         .on('click', (e) => {
           if(!window.darkjs) {
-            window.darkjs = new Darkjs(document.body);
+            window.darkjs = new Darkjs(document.querySelector('body'));
           }
           window.darkjs.toggle();
           e.srcElement.setText(window.darkjs.isDark ? 'Undo':'Demo');
