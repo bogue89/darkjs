@@ -29,14 +29,13 @@ Then visit `http://localhost:8080` to see the demo page.
 
 ![demo page](https://img.shields.io/static/v1?label=demo_page&message=completed&color=success)
 ![script](https://img.shields.io/static/v1?label=crawler&message=poc&color=yellow)
-![script](https://img.shields.io/static/v1?label=styling&message=null&color=red)
+![script](https://img.shields.io/static/v1?label=styling&message=poc&color=yellow)
 ![dist build](https://img.shields.io/static/v1?label=dist&message=null&color=red)
 
 ### Working on
 
 Demo Page
-- Add nested support for elements
-- 
+- Add nested support for elements 
 
 Crawler
 - I would like to only navigate the necessary elements and store that tree struc.
