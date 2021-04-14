@@ -7,17 +7,54 @@ class Color {
     this.alpha = hsla.alpha;
   }
 }
+/* to strings */
+Color.prototype.toRgba = function () {
+  const rgb = this.hslToRgb(this.hue, this.saturation, this.lightness);
+  return "rgba(" + Math.round(rgb.red) + ", " + Math.round(rgb.green) + ", " + Math.round(rgb.blue) + ", " + this.alpha + ")";
+}
 Color.prototype.toHsl = function () {
   return "hsl(" + (this.hue || 0) + ", " + Math.round(this.sat * 100) + "%, " + Math.round(this.lightness * 100) + "%)";
 }
-Color.prototype.hsla = function(string) {
-  var min, max, i, l, s, maxcolor, h, a = 1, rgb = string.replace(/[^\d,]/g,'').split(',');
+/* conversions */
+Color.prototype.hslToRgb = function(hue, sat, light) {
+  var t1, t2, r, g, b;
+  hue = hue / 60;
+  if ( light <= 0.5 ) {
+    t2 = light * (sat + 1);
+  } else {
+    t2 = light + sat - (light * sat);
+  }
+  t1 = light * 2 - t2;
+  r = this.hueToRgb(t1, t2, hue + 2) * 255;
+  g = this.hueToRgb(t1, t2, hue) * 255;
+  b = this.hueToRgb(t1, t2, hue - 2) * 255;
+  return {red : r, green : g, blue : b};
+}
+Color.prototype.hueToRgb = function (t1, t2, hue) {
+  if (hue < 0) hue += 6;
+  if (hue >= 6) hue -= 6;
+  if (hue < 1) return (t2 - t1) * hue + t1;
+  else if(hue < 3) return t2;
+  else if(hue < 4) return (t2 - t1) * (4 - hue) + t1;
+  else return t1;
+}
+/* from strings*/
+Color.prototype.rgba = function(string) {
+  var a = 1, rgb = string.replace(/[^\d,]/g,'').split(',');
   rgb[0] = (parseInt(rgb[0]) || 0) / 255;
   rgb[1] = (parseInt(rgb[1]) || 0) / 255;
   rgb[2] = (parseInt(rgb[2]) || 0) / 255;
   if(typeof rgb[3] != 'undefined') {
     a = parseFloat(rgb[3]);
   }
+  return {red : rgb[0], green : rgb[1], blue : rgb[2], alpha: a};
+}
+Color.prototype.hsla = function(string) {
+  const rgba = this.rgba(string);
+  var min, max, i, l, s, maxcolor, h, rgb = [];
+  rgb[0] = rgba.red;
+  rgb[1] = rgba.green;
+  rgb[2] = rgba.blue;
   min = rgb[0];
   max = rgb[0];
   maxcolor = 0;
@@ -48,10 +85,8 @@ Color.prototype.hsla = function(string) {
     }
   }
   s = s;
-  return {hue : h, saturation : s, lightness : l, alpha: a};
+  return {hue : h, saturation : s, lightness : l, alpha: rgba.alpha};
 }
-
-function color(string) {
+export default function color(string) {
   return new Color(string);
 }
-export default color;
