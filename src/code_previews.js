@@ -1,3 +1,6 @@
+const hljs = require('highlight.js');;
+import 'highlight.js/styles/railscasts.css';
+
 import parse from './parse.js';
 import links from './links.json';
 
@@ -13,18 +16,26 @@ function code() {
 }
 function sync() {
   const element = code();
-  element.innerText = parse(import_preview_body, {
-    url: import_preview_url
-  });
+  element.setHtml(
+    hljs.highlightAuto(
+      parse(import_preview_body, {
+        url: import_preview_url
+      })
+    ).value
+  );
   return element;
 }
 function async() {
   const element = code();
-  element.innerText = parse(import_preview_body, {
-    url: import_preview_url,
-    params: import_preview_params,
-    callback: import_preview_callback
-  });
+  element.setHtml(
+    hljs.highlightAuto(
+      parse(import_preview_body, {
+        url: import_preview_url,
+        params: import_preview_params,
+        callback: import_preview_callback
+      })
+    ).value
+  );
   return element;
 }
 

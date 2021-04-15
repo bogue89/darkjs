@@ -120,7 +120,7 @@ class Darkjs {
     return color.alpha > 0;
   }
   isDarkColor(color) {
-    return color.alpha > 0.3 && color.lightness < 0.7;
+    return color.alpha > 0.3 && color.lightness < 0.5;
   }
 }
 export default Darkjs;

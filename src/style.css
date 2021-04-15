@@ -5,11 +5,11 @@
 body {
     font-family: 'Poppins', sans-serif;
     font-weight: 400;
-    background: #f4f4f4;
+    background: #efefef;
     color: #444;
 }
 h1,h2,h3 {
-    color: #131313;
+    color: #414141;
 }
 main.container {
     padding-top: 3rem;
@@ -20,17 +20,16 @@ main.container .card-preview  {
     margin-bottom: 1rem;
 }
 .card-preview {
-    background: #e8e8e8;
+    background: #fff;
     padding: 2rem;
-    border-radius: 1rem;
+    border-radius: .5rem;
 }
 pre {
     font-size: 12px;
     color: #00990F;
-    background: rgba(47, 230, 251, .1);
+    background: #474747;
     padding: 10px;
-    border-radius: .25rem;
-    box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    border-radius: .25rem; 
 }
 .lead {
     padding-bottom: 10px;
@@ -41,7 +40,7 @@ pre {
     border-radius: .5rem;
 }
 footer {
-    background: #e8e8e8;
+    background: #fff;
     padding: 10px;
 }
 footer p:last-child {
