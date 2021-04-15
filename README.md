@@ -38,13 +38,14 @@ Demo Page
 - Add nested support for elements 
 
 Crawler
-- I would like to only navigate the necessary elements and store that tree struc.
+- I would like to only navigate the necessary elements and store that tree struc
+- Adding support for images and svgs
+- Adding support for color gradients on background
 
 Styling
-- Add offset or scale for better lightness distribution for better element contrast
+- Add offset or scale for better lightness distribution between elements (Contrast)
 - Only adding the clases need it for that element
 - Custom class for the implementation
 
 Distribution
-- Output the isolate js for the final implementation
-
+- Output the isolated js for the final implementation
