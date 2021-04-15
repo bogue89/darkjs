@@ -1,9 +1,10 @@
 import parse from './parse.js';
+import links from './links.json';
 
-const import_preview_url = "cdn.localhost:8080/npm/darkjs@1.0.0/dist/darkjs.min.js";
+const import_preview_url = links.localhost+"/npm/darkjs@1.0.0/dist/darkjs.min.js";
 const import_preview_params = "?callback=darkCallback";
 const import_preview_callback = "\n\t<script>\n\t\tdarkCallback = function() {\n\t\t\tdarkem(document.body);\n\t\t}\n\t</script>";
-const import_preview_body = "<head>\n\t...{callback}\n\t<script src=\"//{url}{params}\"></script>\n</head>";
+const import_preview_body = "<head>\n\t...{callback}\n\t<script src=\"{url}{params}\"></script>\n</head>";
 
 function code() {
   const element = document.createElement('pre');

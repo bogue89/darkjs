@@ -3,6 +3,7 @@ import './style.css';
 import create from './elements.js';
 import Darkjs from './darkjs.js';
 import previews from './code_previews';
+import links from './links.json';
 
 function footer() {
   return create('footer.fixed-bottom.text-center')
@@ -19,7 +20,7 @@ function greeting() {
       .setText('Dark.js')
     ).insert(create('p.lead')
       .setText("Allow your users to navigate on a dark themed version of your website.")
-    ).insert(create('button.btn.btn-primary[type=button]')
+    ).insert(create('a.btn.btn-primary[href='+links.github+'][target=_blank]')
       .setHtml('<i class="fab fa-githun"></i> Download on Github')
     );
 }
