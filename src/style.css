@@ -1,11 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
 @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css');
 
 body {
-    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    background: #f4f4f4;
     color: #444;
 }
 h1,h2,h3 {
-    color: #111;
+    color: #131313;
 }
 main.container {
     padding-top: 3rem;
@@ -16,7 +20,7 @@ main.container .card-preview  {
     margin-bottom: 1rem;
 }
 .card-preview {
-    background: #eee;
+    background: #e8e8e8;
     padding: 2rem;
     border-radius: 1rem;
 }
@@ -32,8 +36,12 @@ pre {
     padding-bottom: 10px;
     border-bottom: 1px solid #333;
 }
+.btn {
+    font-weight: 500;
+    border-radius: .5rem;
+}
 footer {
-    background: #f4f4f4;
+    background: #e8e8e8;
     padding: 10px;
 }
 footer p:last-child {

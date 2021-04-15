@@ -10,7 +10,7 @@ function footer() {
     .insert(create('p')
       .setText('Make the world a little ')
       .insert(create('a[href=#tweetit]')
-        .setHtml('darker <i class="fab fa-twitter">Tweet it</i>')
+        .setHtml('darker <i class="fab fa-twitter"></i>')
       )
     );
 }
@@ -21,7 +21,7 @@ function greeting() {
     ).insert(create('p.lead')
       .setText("Allow your users to navigate on a dark themed version of your website.")
     ).insert(create('a.btn.btn-primary[href='+links.github+'][target=_blank]')
-      .setHtml('<i class="fab fa-githun"></i> Download on Github')
+      .setHtml('Download on Github <i class="fab fa-github"></i>')
     );
 }
 function card() {
