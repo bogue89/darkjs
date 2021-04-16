@@ -34,10 +34,8 @@ class Darkjs {
       n += 1;
     });
     this.styles = create('style');
-    const keys = Object.keys(this.levels);
     var black = colorjs("0,0,0");
-    for(var i=0; i<keys.length; i++) {
-      const level = keys[i];
+    Object.keys(this.levels).forEach(function(level) {
       black.lightness = parseFloat((100+this.offset - level)/100);
       const rgba = black.toRgba();
       const path = this.root.getPath();
@@ -54,7 +52,7 @@ class Darkjs {
           'color': rgba,
         }))
       }.bind(this));
-    }
+    }.bind(this));
     this.root.insert(this.styles);
   }
   getLevelForElement(element) {
