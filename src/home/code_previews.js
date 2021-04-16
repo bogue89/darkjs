@@ -1,8 +1,11 @@
-const hljs = require('highlight.js');;
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+hljs.registerLanguage('javascript', javascript);
+
 import 'highlight.js/styles/railscasts.css';
 
-import parse from './parse.js';
-import links from './links.json';
+import parse from '../utils/parse.js';
+import links from '../refs/links.json';
 
 const import_preview_url = links.localhost+"/npm/darkjs@1.0.0/dist/darkjs.min.js";
 const import_preview_params = "?callback=darkCallback";

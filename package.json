@@ -24,7 +24,6 @@
     "webpack-nano": "^1.1.1"
   },
   "dependencies": {
-    "highlight.js": "^10.7.2",
-    "lodash": "^4.17.21"
+    "highlight.js": "^10.7.2"
   }
 }

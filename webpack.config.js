@@ -45,7 +45,7 @@ module.exports = (env, argv) => {
     config.devtool = 'source-map';
   }
   if (argv.mode === 'production') {
-    config.entry.darkjs = './src/index.dark.js';
+    config.entry.darkjs = './src/dark/index.js';
   }
   return config;
 };

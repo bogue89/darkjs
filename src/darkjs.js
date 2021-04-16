@@ -1,7 +1,6 @@
-import create from './elements.js';
-import parse from './parse.js';
-import colorjs from './color.js';
-import darkjscss from './darkjs.css';
+import create from './utils/elements.js';
+import parse from './utils/parse.js';
+import colorjs from './utils/color.js';
 
 const style_class = "{class}-{prop}-{level}";
 const style_def = "{path}.{class}.{style_class}, {path}.{class} .{style_class} { {prop}: {color} !important; } \n";
@@ -33,26 +32,7 @@ class Darkjs {
       this.levels[level] = n;
       n += 1;
     });
-    this.styles = create('style');
-    var black = colorjs("0,0,0");
-    Object.keys(this.levels).forEach(function(level) {
-      black.lightness = parseFloat((100+this.offset - level)/100);
-      const rgba = black.toRgba();
-      const path = this.root.getPath();
-      Object.keys(style_props).forEach(function(prop, n) {
-        this.styles.addText(parse(style_def, {
-          'path': path,
-          'class': this.className,
-          'style_class': parse(style_class, {
-            'class': this.className,
-            'prop': style_props[prop],
-            'level': this.levels[level]
-          }),
-          'prop': prop,
-          'color': rgba,
-        }))
-      }.bind(this));
-    }.bind(this));
+    this.styles = this.creteStylesWithLevels(this.levels);
     this.root.insert(this.styles);
   }
   getLevelForElement(element) {
@@ -76,6 +56,29 @@ class Darkjs {
       levels = levels.concat(this.getLevelForElement(childs[i]));
     }
     return levels;
+  }
+  creteStylesWithLevels(levels) {
+    const styles = create('style');
+    var black = colorjs("0,0,0");
+    Object.keys(levels).forEach(function(level) {
+      black.lightness = parseFloat((100+this.offset - level)/100);
+      const rgba = black.toRgba();
+      const path = this.root.getPath();
+      Object.keys(style_props).forEach(function(prop, n) {
+        styles.addText(parse(style_def, {
+          'path': path,
+          'class': this.className,
+          'style_class': parse(style_class, {
+            'class': this.className,
+            'prop': style_props[prop],
+            'level': levels[level]
+          }),
+          'prop': prop,
+          'color': rgba,
+        }))
+      }.bind(this));
+    }.bind(this));
+    return styles;
   }
   setLevelsToElement(element) {
     var color;
