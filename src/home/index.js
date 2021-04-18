@@ -3,6 +3,7 @@ import links from '../refs/links.json';
 import Darkjs from '../darkjs.js';
 
 import previews from './code_previews.js';
+import whatifs from './whatifs.js';
 
 function greetings() {
   return create('div.greetings')
@@ -10,7 +11,7 @@ function greetings() {
       .setText('Dark.js')
     ).insert(create('p.lead')
       .setText("Allow your users to navigate on a dark themed version of your website.")
-    ).insert(create('a.btn.btn-primary[href='+links.github+'][target=_blank]')
+    ).insert(create('a.btn.btn-primary.w-100[href='+links.github+'][target=_blank]')
       .setHtml('Download on Github <i class="fab fa-github"></i>')
     );
 }
@@ -37,4 +38,4 @@ function card() {
       )
     );    
 }
-export default {greetings, card};
+export default {greetings, card, whatifs};

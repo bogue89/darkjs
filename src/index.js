@@ -15,13 +15,15 @@ function footer() {
 function content() {
   return create('main.container')
     .insert(create('div.row')
-      .insert(create('div.col-lg-5')
+      .insert(create('div.col-lg-3.col-md-5')
         .insert(home.greetings())
       )
-      .insert(create('div.col-lg-7')
+      .insert(create('div.col-lg-8.offset-lg-1.col-md-7')
         .insert(home.card())
       )
-    );
+    )
+    .insert(create('h3.text-center').setText('But what if...'))
+    .insert(home.whatifs());
 }
 document.body.appendChild(content());
 document.body.appendChild(footer());

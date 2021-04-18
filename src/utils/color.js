@@ -8,12 +8,15 @@ class Color {
   }
 }
 /* to strings */
+Color.prototype.toString = function() {
+  return this.toRgba();
+}
 Color.prototype.toRgba = function () {
-  const rgb = this.hslToRgb(this.hue, this.saturation, this.lightness);
+  const rgb = this.hslToRgb(this.hue%360, this.saturation, this.lightness);
   return "rgba(" + Math.round(rgb.red) + ", " + Math.round(rgb.green) + ", " + Math.round(rgb.blue) + ", " + this.alpha + ")";
 }
 Color.prototype.toHsl = function () {
-  return "hsl(" + (this.hue || 0) + ", " + Math.round(this.sat * 100) + "%, " + Math.round(this.lightness * 100) + "%)";
+  return "hsl(" + (this.hue%360 || 0) + ", " + Math.round(this.sat * 100) + "%, " + Math.round(this.lightness * 100) + "%)";
 }
 /* conversions */
 Color.prototype.hslToRgb = function(hue, sat, light) {
@@ -40,7 +43,7 @@ Color.prototype.hueToRgb = function (t1, t2, hue) {
 }
 /* from strings*/
 Color.prototype.rgba = function(string) {
-  var a = 1, rgb = string.replace(/[^\d,]/g,'').split(',');
+  var a = 1, rgb = string.replace(/[^\d\,\.]/g,'').split(',');
   rgb[0] = (parseInt(rgb[0]) || 0) / 255;
   rgb[1] = (parseInt(rgb[1]) || 0) / 255;
   rgb[2] = (parseInt(rgb[2]) || 0) / 255;

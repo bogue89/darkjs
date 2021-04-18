@@ -17,7 +17,7 @@ main.container {
 }
 main.container .greetings,
 main.container .card-preview  {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 .card-preview {
     background: #fff;
@@ -31,9 +31,12 @@ pre {
     padding: 10px;
     border-radius: .25rem; 
 }
+.card {
+    border: 0;
+}
 .lead {
     padding-bottom: 10px;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid #ccc;
 }
 .btn {
     font-weight: 500;

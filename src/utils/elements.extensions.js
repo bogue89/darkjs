@@ -1,5 +1,6 @@
 Element.prototype.setClass = function (cls) {
-    return this.setAttribute("class", cls || "");
+    this.setAttribute("class", cls || "")
+    return this;
 }
 Element.prototype.getClass = function () {
     return this.getAttribute("class") || "";
@@ -25,10 +26,10 @@ Element.prototype.removeClassMatching = function (regex) {
     }
     return this;
 }
-Element.prototype.create = function(html) {
-    var temp = document.createElement('div');
-    temp.innerHTML = html.trim();
-    return temp.childNodes.length > 1 ? temp.childNodes:temp.firstChild;
+Element.prototype.toHtml = function() {
+    var tmp = document.createElement('div');
+    tmp.appendChild(this);
+    return tmp.innerHTML;
 }
 Element.prototype.insert = function(el, position) {
     if(this.childNodes.length>0 && position<this.childNodes.length && position !== 'bottom') {
@@ -89,6 +90,14 @@ Element.prototype.on = function(event, callback, useCapture) {
 }
 Window.prototype.on = Element.prototype.on;
 Element.prototype.styles = null;
+Element.prototype.addStyle = function(prop, value) {
+  this.style[prop] = value;
+  return this;
+}
+Element.prototype.setStyle = function(style) {
+  this.setAttribute('style', style)
+  return this;
+}
 Element.prototype.getStyle = function(prop) {
   if(!this.styles) {
     this.styles = window.getComputedStyle(this, null);
@@ -107,7 +116,7 @@ Element.prototype.getPath = function() {
   for (var i= 0; i<siblings.length; i++) {
     var sibling= siblings[i];
     if (sibling===this) {
-      return this.parentNode.getPath()+' > '+this.tagName.toLowerCase()+':nth-child('+n+')';
+      return this.parentNode.getPath()+' > '+this.tagName.toLowerCase()+':nth-of-type('+n+')';
     }
     if (sibling.nodeType===1 && sibling.tagName===this.tagName) {
       n += 1;
