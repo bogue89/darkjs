@@ -3,7 +3,7 @@ function element(selector) {
     const tag = selector.replace(/^(\w+).*/i,"$1");
     const element = document.createElement(tag);
     var id = selector.replace(/\[[^\[\]]+\]/g,'').match(/#[\w-]+/), 
-    classes = selector.match(/\.([\w\-]+)/g), 
+    classes = selector.replace(/\[[^\[\]]+\]/g,'').match(/\.([\w\-]+)/g), 
     attributes = selector.match(/\[[^\[\]]+\]/g);
     if(id) {
         element.id = id.join('').replace('#', '');

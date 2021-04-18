@@ -50,7 +50,7 @@ Element.prototype.before = function(el, reference) {
 }
 Element.prototype.after = function(el, reference) {
     var parent = this.parentNode;
-    var position = Array.prototype.indexOf.call(parent.childNodes, reference) + 1;
+    var position = Array.prototype.indexOf.call(parent.childNodes, this) + 1;
     return parent.insert(el, position);
 }
 Element.prototype.remove = function(){

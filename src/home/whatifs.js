@@ -1,9 +1,11 @@
+import parse from '../utils/parse.js';
 import create from '../utils/elements.js';
 import colorjs from '../utils/color.js';
 import Darkjs from '../darkjs.js';
+import smile from '../assets/smile.svg';
 import './whatifs.css';
 
-function card(title, example) {
+function card(title, example, finished) {
   return create('div.card')
     .insert(create('div.card-body')
       .insert(create('h3')
@@ -15,7 +17,7 @@ function card(title, example) {
     )
     .insert(create('div.card-footer')
       .insert(create('button[type=button].btn.btn-warning.w-100')
-        .setText('Test')
+        .setHtml('<i class="fas fa-'+(finished ? "check text-success":"times text-danger")+'"></i> Test')
         .on('click', function() {
           if(!this.darkjs) {
             this.darkjs = new Darkjs(this.parentNode.parentNode, {
@@ -54,27 +56,39 @@ function opacity() {
     );
 }
 function blackLogo() {
+  var size = 100;
   return create('div')
     .insert(create('p')
       .setHtml('On img and svg elements')
     )
-    .insert(create('div.text-center')
-      .setHtml('<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-smile"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>')
+    .insert(create('div.d-flex')
+      .insert(create(parse('img[src={url}][width=30%]', { url: smile}))
+        .on('load', function() {
+          fetch(this.src).then((resp) => resp.text()).then(function(data) {
+            this.after(create('div').setHtml(data));
+          }.bind(this));
+        })
+      )
+      .insert(create('div')
+        .setStyle(parse('background: transparent url({url}) center center repeat-x; background-size:contain; width: {size}px; height: {size}px;', {
+          url: smile,
+          size: size
+        }))
+      )
     );
 }
 function colorBrightness() {
   var color1, color2;
-  const color = colorjs([Math.random() * 255, Math.random() * 255, Math.random() * 255].join(','));
+  const color = colorjs([120, 80, 270].join(','));
   color.lightness = 0.8;
   color1 = color.toRgba();
   color.hue += 150;
   color2 = color.toRgba();
-
   return create('div')
     .insert(create('p')
       .setHtml('Colors with same brigtness level')
     )
-    .insert(create('div.d-flex')
+    .insert(create('div.d-flex.align-items-center')
       .insert(create('div')
         .setStyle('width:50%; height: 80px;')
         .addStyle('background-color', color1)

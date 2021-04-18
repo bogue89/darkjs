@@ -11,4 +11,8 @@
 }
 .whatifs .card-footer .btn {
     display: block;
+    position: relative;
+}
+.whatifs .card-footer .btn:not([class*=darkjs-]) .fas {
+    display: none;
 }
