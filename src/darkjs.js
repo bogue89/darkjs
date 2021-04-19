@@ -5,94 +5,93 @@ import colorjs from './utils/color.js';
 const style_class = "{class}-{prop}-{level}";
 const style_def = "{path}.{class}.{style_class}, {path}.{class} .{style_class} { {prop}: {color} !important; } \n";
 const style_props = {
-  'background-color': 'bg', 
+  'background-color': 'bg',
+  'fill': 'fl',
+  'stroke': 'st',
   'color': 'cl',
   'border-top-color': 'bt',
   'border-right-color': 'br',
   'border-bottom-color': 'bb',
   'border-left-color': 'bl'
 };
+const background_props = ['fill', 'background-color', 'background'];
 
 class Darkjs {
-  constructor(element) {
+  constructor(element, options = {}) {
     this.root = element;
     this.isDark = false;
-    this.levels = null;
-    this.tree = null;
-    this.className = "darkjs";
-    this.styles = null;
-    this.offset = 5;
-    this.darkThreshold = 0.3;
-    this.brightThreshold = 0.7;
+    this.colors = {};
+    this.offset = options.offset ?? 10;
+    this.className = options.className || "darkjs";
+    this.darkThreshold = options.darkThreshold ?? 0.3;
+    this.brightThreshold = options.brightThreshold ?? 0.7;
   }
-  getLevels() {
-    this.levels = {};
-    var n = 1;
-    (new Set(this.getLevelForElement(this.root).sort((a,b) => b - a))).forEach((level) => {
-      this.levels[level] = n;
-      n += 1;
-    });
-    this.styles = this.creteStylesWithLevels(this.levels);
-    this.root.insert(this.styles);
+  getColorsForRoot() {
+    this.colors = {}
+    this.getColorsFromElement(this.root);
+    this.colors = this.filterColors();
+    this.root.insert(this.creteStylesWithColors(this.colors));
   }
-  getLevelForElement(element) {
-    var levels = [];
-    var color;
-    
+  getColorsFromElement(element) {  
     Object.keys(style_props).forEach(function(prop, n) {
-      color = colorjs(element.getStyle(prop));
-      if(
-        this.hasColor(color) &&
-        (
-          (n===0 && this.is2Bright(color)) ||
-          (n>0 && this.is2Dark(color))
-        )
-        ) {
-        levels.push(this.colorLevel(color));
+      const string = element.getStyle(prop);
+      if(/rgb/.test(string) && !this.colors[string]) {
+        this.colors[string] = colorjs(string);
       }
     }.bind(this));
     const childs = element.children;
     for(var i=0; i<childs.length; i++) {
-      levels = levels.concat(this.getLevelForElement(childs[i]));
+      this.getColorsFromElement(childs[i]);
     }
-    return levels;
   }
-  creteStylesWithLevels(levels) {
+  filterColors() {
+    const colors = {};
+    Object.keys(this.colors).forEach(function(key) {
+      const color = this.colors[key];
+      if(this.hasColor(color) && (this.is2Bright(color) || this.is2Dark(color))) {
+        colors[key] = color;
+      }
+    }.bind(this));
+    return colors;
+  }
+  creteStylesWithColors(colors) {
     const styles = create('style');
-    var black = colorjs("0,0,0");
-    Object.keys(levels).forEach(function(level) {
-      black.lightness = parseFloat((100+this.offset - level)/100);
-      const rgba = black.toRgba();
-      const path = this.root.getPath();
-      Object.keys(style_props).forEach(function(prop, n) {
-        styles.addText(parse(style_def, {
-          'path': path,
-          'class': this.className,
-          'style_class': parse(style_class, {
-            'class': this.className,
-            'prop': style_props[prop],
-            'level': levels[level]
-          }),
-          'prop': prop,
-          'color': rgba,
-        }))
-      }.bind(this));
+    Object.keys(colors).forEach(function(rgba) {
+      styles.addText(this.createStylePropsForColor(colorjs(rgba), this.getColorLevel(colors[rgba])));
     }.bind(this));
     return styles;
   }
-  setLevelsToElement(element) {
-    var color;
+  createStylePropsForColor(color, level) {
+    var stylesProps = "";
+    const path = this.root.getPath();
+    color.lightness = this.invertLightness(color.lightness);
     Object.keys(style_props).forEach(function(prop, n) {
-      color = colorjs(element.getStyle(prop));
-      const level = this.levels[this.colorLevel(color)];
-      if(
-        level && 
-        this.hasColor(color) &&
-        (
-          (n===0 && this.is2Bright(color)) ||
-          (n>0 && this.is2Dark(color))
-        )
-        ) {
+      stylesProps += this.createStyleDef(path, this.className, prop, level, color)
+    }.bind(this));
+    return stylesProps;
+  }
+  createStyleDef(path, className, prop, level, color) {
+    return parse(style_def, {
+        'path': path,
+        'class': className,
+        'style_class': parse(style_class, {
+          'class': className,
+          'prop': style_props[prop],
+          'level': level
+        }),
+        'prop': prop,
+        'color': color.toRgba(),
+      });
+  }
+  addDarkClassToRoot() {
+    this.addDarkClassToElement(this.root);
+  }
+  addDarkClassToElement(element) {
+    Object.keys(style_props).forEach(function(prop, n) {
+      const string = element.getStyle(prop);
+      const color = this.colors[string];
+      if(color && this.colorRule(color, prop)) {
+        const level = this.getColorLevel(color);
         element
         .addClass(this.className)
         .addClass(parse(style_class, {
@@ -104,7 +103,7 @@ class Darkjs {
     }.bind(this));
     const childs = element.children;
     for(var i=0; i<childs.length; i++) {
-      this.setLevelsToElement(childs[i]);
+      this.addDarkClassToElement(childs[i]);
     }
   }
   removeClassToElement(element) {
@@ -115,10 +114,10 @@ class Darkjs {
     }
   }
   darkem() {
-    if(!this.levels) {
-      this.getLevels();
+    if(!Object.keys(this.colors).length) {
+      this.getColorsForRoot();
     }
-    this.setLevelsToElement(this.root);
+    this.addDarkClassToRoot();
     this.isDark = true;
   }
   darkemnt() {
@@ -132,8 +131,22 @@ class Darkjs {
       this.darkem();
     }
   }
-  colorLevel(color) {
-    return Math.round(color.lightness * 100) || 0;
+  getColorLevel(color) {
+    return Object.values(this.colors).indexOf(color)+1;
+  }
+  getColorHex(color) {
+    return color.toHexa().replace('#','');
+  }
+  colorRule(color, prop) {
+    const hasColor = this.hasColor(color);
+    if(background_props.indexOf(prop) >= 0) {
+      return hasColor && this.is2Bright(color);
+    } else {
+      return hasColor && this.is2Dark(color);
+    }
+  }
+  invertLightness(lightness) {
+    return 1+(this.offset/100) - lightness;
   }
   hasColor(color) {
     return color.alpha > 0;

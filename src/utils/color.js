@@ -11,6 +11,18 @@ class Color {
 Color.prototype.toString = function() {
   return this.toRgba();
 }
+Color.prototype.toHexa = function() {
+  const rgba = this.hslToRgb(this.hue%360, this.saturation, this.lightness);
+  var a = this.valToHex(this.alpha * 255);
+  return this.toHex() + a;
+}
+Color.prototype.toHex = function() {
+  const rgba = this.hslToRgb(this.hue%360, this.saturation, this.lightness);
+  var r = this.valToHex(rgba.red);
+  var g = this.valToHex(rgba.green);
+  var b = this.valToHex(rgba.blue);
+  return "#" +  r + g + b;
+}
 Color.prototype.toRgba = function () {
   const rgb = this.hslToRgb(this.hue%360, this.saturation, this.lightness);
   return "rgba(" + Math.round(rgb.red) + ", " + Math.round(rgb.green) + ", " + Math.round(rgb.blue) + ", " + this.alpha + ")";
@@ -19,6 +31,11 @@ Color.prototype.toHsl = function () {
   return "hsl(" + (this.hue%360 || 0) + ", " + Math.round(this.sat * 100) + "%, " + Math.round(this.lightness * 100) + "%)";
 }
 /* conversions */
+Color.prototype.valToHex = function(n) {
+  var hex = parseInt(n).toString(16);
+  while (hex.length < 2) {hex = "0" + hex; }
+  return hex;
+}
 Color.prototype.hslToRgb = function(hue, sat, light) {
   var t1, t2, r, g, b;
   hue = hue / 60;
