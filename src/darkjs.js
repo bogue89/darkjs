@@ -21,7 +21,7 @@ class Darkjs {
     this.root = element;
     this.isDark = false;
     this.colors = {};
-    this.offset = options.offset ?? 10;
+    this.offset = options.offset ?? 1;
     this.className = options.className || "darkjs";
     this.darkThreshold = options.darkThreshold ?? 0.3;
     this.brightThreshold = options.brightThreshold ?? 0.7;
