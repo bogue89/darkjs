@@ -21,6 +21,7 @@ function card(title, example, finished) {
         .on('click', function() {
           if(!this.darkjs) {
             this.darkjs = new Darkjs(this.parentNode.parentNode, {
+              className: "dk",
               offset:0
             });
           }
@@ -102,7 +103,7 @@ function colorBrightness() {
 const cases = [
   card('Opacity', opacity()),
   card('Black logos', blackLogo()),
-  card('Equal bright', colorBrightness()),
+  card('Equal bright', colorBrightness(), true),
 ];
 function whatifs() {
   const element = create('div.row');

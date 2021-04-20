@@ -35,17 +35,12 @@ Then visit `http://localhost:8080` to see the demo page.
 ### Working on
 
 Demo Page
-- Add nested support for elements 
+- Add nested support for elements
 
 Crawler
-- I would like to only navigate the necessary elements and store that tree struc
-- Adding support for images and svgs
+- I would like to only navigate the necessary elements and store that tree struct
+- Adding support for images and ~~svgs~~
 - Adding support for color gradients on background
-
-Styling
-- Add offset or scale for better lightness distribution between elements (Contrast)
-- Only adding the clases need it for that element
-- Custom class for the implementation
 
 Distribution
 - Output the isolated js for the final implementation

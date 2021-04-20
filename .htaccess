@@ -1,0 +1,38 @@
+Redirect 301 /apple-touch-icon.png /favicon.ico
+Redirect 301 /apple-touch-icon-precomposed.png /favicon.ico
+
+### mod_rewrite.c
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule    ^$    dist/index.html    [L]
+    RewriteCond    %{REQUEST_FILENAME} !-f
+    RewriteRule    ^(.*)$  dist/$1  [L]
+</IfModule>
+
+### mod_expires.c
+<IfModule mod_expires.c>
+	ExpiresActive On
+	ExpiresDefault A259200
+	<filesmatch ".(jpg|jpeg|JPG|gif|GIF|png|webp|css|ico|js|mp4|mov|mpg|ttf|woff|otf|pdf)$">
+		ExpiresDefault "access plus 1 year"
+	</filesmatch>
+</IfModule>
+
+### mod_deflate.c
+<IfModule mod_deflate.c>
+	<filesMatch "\.(js|css|html|php)$">
+		SetOutputFilter DEFLATE
+	</filesMatch>
+</IfModule>
+
+### mod_gzip.c
+<IfModule mod_gzip.c>
+	mod_gzip_onYes
+	mod_gzip_dechunkYes
+	mod_gzip_item_includefile.(html?|txt|css|js|php|pl)$
+	mod_gzip_item_includehandler^cgi-script$
+	mod_gzip_item_includemime^text/.*
+	mod_gzip_item_includemime^application/x-javascript.*
+	mod_gzip_item_excludemime^image/.*
+	mod_gzip_item_excluderspheader^Content-Encoding:.*gzip.*
+</IfModule>
