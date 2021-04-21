@@ -1,4 +1,5 @@
 const path = require('path');
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -9,6 +10,7 @@ var config = {
   mode: 'development',
   entry: {
     index: './src/index.js',
+    darkjs: './src/dark/index.js',
   },  
   plugins: [
     new HtmlWebpackPlugin({
@@ -45,7 +47,7 @@ module.exports = (env, argv) => {
     config.devtool = 'source-map';
   }
   if (argv.mode === 'production') {
-    config.entry.darkjs = './src/dark/index.js';
+    
   }
   return config;
 };
