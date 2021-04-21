@@ -14,7 +14,7 @@ function element(selector) {
     if(attributes) {
         attributes.forEach((attribute) => {
             var attr = attribute.replace(/\[|\]/g, '').split('='); 
-            element.setAttribute(attr[0], attr[1] || "");
+            element.setAttribute(attr[0], attr.splice(1).join('='));
         })
     }
     return element;

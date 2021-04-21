@@ -1,7 +1,5 @@
 import create from '../utils/elements.js';
 import links from '../refs/links.json';
-import Darkjs from '../darkjs.js';
-
 import previews from './code_previews.js';
 import whatifs from './whatifs.js';
 
@@ -29,6 +27,10 @@ function card() {
       .insert(create('button.btn.btn-info[type=button]')
         .setText("Demo")
         .on('click', (e) => {
+          if(typeof Darkjs == 'undefined') {
+            alert('you need to import the lib');
+            return;
+          }
           if(!window.darkjs) {
             window.darkjs = new Darkjs(document.querySelector('body'));
           }

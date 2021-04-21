@@ -15,6 +15,6 @@
     display: block;
     position: relative;
 }
-.whatifs .card-footer .btn:not([class*=darkjs-]) .fas {
+.whatifs .card-footer .btn:not([class*=dk-]):not([class*=darkjs-]) .fas {
     display: none;
 }

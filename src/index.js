@@ -1,13 +1,26 @@
+
 import './style.css';
 
 import create from './utils/elements.js';
 import home from './home/index.js';
 
+function tweetIntent(url, text) {
+  var href = "https://twitter.com/intent/tweet?";
+  const params = {
+    text: encodeURIComponent(text),
+    url: encodeURIComponent(url),
+    via: 'bogue89'
+  };
+  Object.keys(params).forEach((param) => {
+    href += (param+"="+params[param]+"&");
+  });
+  return href;
+}
 function footer() {
   return create('footer.fixed-bottom.text-center')
     .insert(create('p')
       .setText('Make the world a little ')
-      .insert(create('a[href=#tweetit]')
+      .insert(create('a.twitter-share-button[target=_blank][href='+tweetIntent(location.href, "Make the world a little darker")+']')
         .setHtml('darker <i class="fab fa-twitter"></i>')
       )
     );

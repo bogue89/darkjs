@@ -30,7 +30,6 @@ class Darkjs {
     this.colors = {}
     this.getColorsFromElement(this.root);
     this.colors = this.filterColors();
-    this.root.insert(this.creteStylesWithColors(this.colors));
   }
   getColorsFromElement(element) {  
     Object.keys(style_props).forEach(function(prop, n) {
@@ -54,19 +53,22 @@ class Darkjs {
     }.bind(this));
     return colors;
   }
+  addSylesForColors(colors) {
+    this.root.insert(this.creteStylesWithColors(colors), 0);
+  }
   creteStylesWithColors(colors) {
-    const styles = create('style');
+    const styles = create('style[class='+this.className+']');
     Object.keys(colors).forEach(function(rgba) {
       styles.addText(this.createStylePropsForColor(colorjs(rgba), this.getColorLevel(colors[rgba])));
     }.bind(this));
     return styles;
   }
   createStylePropsForColor(color, level) {
-    var stylesProps = "";
     const path = this.root.getPath();
+    var stylesProps = parse(".{class} { transition: all .2s ease !important; }", {class: this.className });
     color.lightness = this.invertLightness(color.lightness);
     Object.keys(style_props).forEach(function(prop, n) {
-      stylesProps += this.createStyleDef(path, this.className, prop, level, color)
+      stylesProps += this.createStyleDef(path, this.className, prop, level, color);
     }.bind(this));
     return stylesProps;
   }
@@ -117,6 +119,7 @@ class Darkjs {
     if(!Object.keys(this.colors).length) {
       this.getColorsForRoot();
     }
+    this.addSylesForColors(this.colors);
     this.addDarkClassToRoot();
     this.isDark = true;
   }
