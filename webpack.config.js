@@ -11,10 +11,11 @@ var config = {
   entry: {
     index: './src/index.js',
     darkjs: './src/dark/index.js',
-  },  
+  },
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Darktheme',
+      favicon: './src/assets/bat.svg',
     }),
     new WebpackManifestPlugin(options),
     new MiniCssExtractPlugin()
