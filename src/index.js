@@ -2,19 +2,13 @@
 import './style.css';
 
 import create from './utils/elements.js';
+import parse from './utils/parse.js';
 import home from './home/index.js';
 
 function tweetIntent(url, text) {
-  var href = "https://twitter.com/intent/tweet?";
-  const params = {
-    text: encodeURIComponent(text),
-    url: encodeURIComponent(url),
-    via: 'bogue89'
-  };
-  Object.keys(params).forEach((param) => {
-    href += (param+"="+params[param]+"&");
-  });
-  return href;
+  var href = "https://twitter.com/intent/tweet";
+  const params = { text, url, via: 'bogue89'};
+  return href+"?"+params.toQueryString();
 }
 function footer() {
   return create('footer.fixed-bottom.text-center')
@@ -40,3 +34,21 @@ function content() {
 }
 document.body.appendChild(content());
 document.body.appendChild(footer());
+
+
+function importDarkjs() {
+  const darklib = create(parse("script[defer][src={url}{lib}?{query}]", {
+    url: location.href,
+    lib: 'darkjs.js',
+    query: {
+      callback: 'darkcall',
+      offset: 30,
+    }.toQueryString()
+  }));
+  return darklib;
+}
+function darkcall() {
+  console.log('already implemented on home button');
+}
+window.darkcall = darkcall;
+document.head.append(importDarkjs());

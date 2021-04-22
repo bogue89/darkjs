@@ -31,11 +31,11 @@ function card() {
             alert('you need to import the lib');
             return;
           }
-          if(!window.darkjs) {
-            window.darkjs = new Darkjs(document.querySelector('body'));
+          if(!document.body.darkjs) {
+            document.body.darkjs = new Darkjs(document.body);
           }
-          window.darkjs.toggle();
-          e.srcElement.setText(window.darkjs.isDark ? 'Undo':'Demo');
+          document.body.darkjs.toggle();
+          e.srcElement.setText(document.body.darkjs.isDark ? 'Undo':'Demo');
         })
       )
     );    

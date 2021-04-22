@@ -5,7 +5,7 @@
 body {
     font-family: 'Poppins', sans-serif;
     font-weight: 400;
-    background: #efefef;
+    background: #f2f2f2;
     color: #444;
 }
 h1,h2,h3 {
@@ -27,7 +27,7 @@ main.container .card-preview  {
 pre {
     font-size: 12px;
     color: #00990F;
-    background: #474747;
+    background: rgba(0,0,0,0.6);
     padding: 10px;
     border-radius: .25rem; 
 }
@@ -41,6 +41,7 @@ pre {
 .btn {
     font-weight: 500;
     border-radius: .5rem;
+    transition: none;
 }
 footer {
     background: #fff;
