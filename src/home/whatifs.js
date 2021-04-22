@@ -2,7 +2,7 @@ import parse from '../utils/parse.js';
 import create from '../utils/elements.js';
 import colorjs from '../utils/color.js';
 import Darkjs from '../darkjs.js';
-import smile from '../assets/smile.svg';
+import bat from '../assets/bat.svg';
 import './whatifs.css';
 
 function card(title, example, finished) {
@@ -63,7 +63,7 @@ function blackLogo() {
       .setHtml('On img and svg elements')
     )
     .insert(create('div.d-flex')
-      .insert(create(parse('img[src={url}][width=30%]', { url: smile}))
+      .insert(create(parse('img[src={url}][width=30%]', { url: bat}))
         .on('load', function() {
           fetch(this.src).then((resp) => resp.text()).then(function(data) {
             this.after(create('div').setHtml(data));
@@ -72,7 +72,7 @@ function blackLogo() {
       )
       .insert(create('div')
         .setStyle(parse('background: transparent url({url}) center center repeat-x; background-size:contain; width: {size}px; height: {size}px;', {
-          url: smile,
+          url: bat,
           size: size
         }))
       )

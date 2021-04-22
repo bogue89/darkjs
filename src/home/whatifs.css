@@ -11,6 +11,10 @@
     min-height: 280px;
     overflow: hidden;
 }
+.whatifs .card-body svg {
+    width: 100px;
+    height: auto;
+}
 .whatifs .card-footer .btn {
     display: block;
     position: relative;
