@@ -66,6 +66,7 @@ class Darkjs {
   }
   creteStylesWithColors(colors) {
     const styles = create('style[class='+this.className+']');
+    styles.addText(parse(".{class} { transition: all .2s ease !important; } \n", {class: this.className }));
     Object.keys(colors).forEach(function(rgba) {
       styles.addText(this.createStylePropsForColor(colorjs(rgba), this.getColorLevel(colors[rgba])));
     }.bind(this));
@@ -73,7 +74,7 @@ class Darkjs {
   }
   createStylePropsForColor(color, level) {
     const path = this.root.getPath();
-    var stylesProps = parse(".{class} { transition: all .2s ease !important; } \n", {class: this.className });
+    var stylesProps = "";
     color.lightness = this.invertLightness(color.lightness);
     Object.keys(style_props).forEach(function(prop, n) {
       stylesProps += this.createStyleDef(path, this.className, prop, level, color);
