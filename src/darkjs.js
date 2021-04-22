@@ -14,7 +14,7 @@ const style_props = {
   'border-bottom-color': 'bb',
   'border-left-color': 'bl'
 };
-const background_props = ['fill', 'background-color', 'background'];
+const background_props = ['background-color', 'background'];
 
 class Darkjs {
   constructor(element, options = {}) {
@@ -53,8 +53,16 @@ class Darkjs {
     }.bind(this));
     return colors;
   }
-  addSylesForColors(colors) {
-    this.root.insert(this.creteStylesWithColors(colors), 0);
+  addSylesForColors() {
+    this.removeStylesFromElement(this.root);
+    this.root.insert(this.creteStylesWithColors(this.colors), 0);
+  }
+  removeStylesFromElement(element) {
+    element.childNodes.forEach((e) => {
+      if(e.tagName=="STYLE" && e.className.match(this.className)) {
+        e.remove();
+      }
+    });
   }
   creteStylesWithColors(colors) {
     const styles = create('style[class='+this.className+']');
@@ -65,7 +73,7 @@ class Darkjs {
   }
   createStylePropsForColor(color, level) {
     const path = this.root.getPath();
-    var stylesProps = parse(".{class} { transition: all .2s ease !important; }", {class: this.className });
+    var stylesProps = parse(".{class} { transition: all .2s ease !important; } \n", {class: this.className });
     color.lightness = this.invertLightness(color.lightness);
     Object.keys(style_props).forEach(function(prop, n) {
       stylesProps += this.createStyleDef(path, this.className, prop, level, color);
@@ -92,6 +100,7 @@ class Darkjs {
     Object.keys(style_props).forEach(function(prop, n) {
       const string = element.getStyle(prop);
       const color = this.colors[string];
+      
       if(color && this.colorRule(color, prop)) {
         const level = this.getColorLevel(color);
         element
@@ -116,10 +125,8 @@ class Darkjs {
     }
   }
   darkem() {
-    if(!Object.keys(this.colors).length) {
-      this.getColorsForRoot();
-    }
-    this.addSylesForColors(this.colors);
+    this.getColorsForRoot();
+    this.addSylesForColors();
     this.addDarkClassToRoot();
     this.isDark = true;
   }
