@@ -1,7 +1,7 @@
 import parse from '../utils/parse.js';
 import create from '../utils/elements.js';
 import colorjs from '../utils/color.js';
-import Darkjs from '../darkjs.js';
+import Darkjs from '../dark/darkjs.js';
 import bat from '../assets/bat.svg';
 import './whatifs.css';
 
@@ -19,13 +19,15 @@ function card(title, example, finished) {
       .insert(create('button[type=button].btn.btn-warning.w-100')
         .setHtml('<i class="fas fa-'+(finished ? "check text-success":"times text-danger")+'"></i> Test')
         .on('click', function() {
-          if(!this.darkjs) {
-            this.darkjs = new Darkjs(this.parentNode.parentNode, {
+          const card = this.parentNode.parentNode;
+          if(!card.darkjs) {
+            card.darkjs = new Darkjs(card, {
               className: "dk",
-              offset:0
+              backgroundProps: ['background-color'],
+              offset:0,
             });
           }
-          this.darkjs.toggle();
+          card.darkjs.toggle();
         })
       )
     );
@@ -57,19 +59,20 @@ function opacity() {
     );
 }
 function blackLogo() {
-  var size = 100;
+  const size = 100;
+  const svgCard = create('div');
+  fetch(bat)
+    .then((resp) => resp.text())
+    .then((data) => {
+      svgCard.setHtml(data);
+  });
   return create('div')
     .insert(create('p')
       .setHtml('On img and svg elements')
     )
     .insert(create('div.d-flex')
-      .insert(create(parse('img[src={url}][width=30%]', { url: bat}))
-        .on('load', function() {
-          fetch(this.src).then((resp) => resp.text()).then(function(data) {
-            this.after(create('div').setHtml(data));
-          }.bind(this));
-        })
-      )
+      .insert(create(parse('img[src={url}][width=30%]', { url: bat})))
+      .insert(svgCard)
       .insert(create('div')
         .setStyle(parse('background: transparent url({url}) center center repeat-x; background-size:contain; width: {size}px; height: {size}px;', {
           url: bat,

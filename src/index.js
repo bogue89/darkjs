@@ -4,6 +4,7 @@ import './style.css';
 import create from './utils/elements.js';
 import parse from './utils/parse.js';
 import home from './home/index.js';
+import Darkjs from './dark/darkjs.js';
 
 function tweetIntent(url, text) {
   var href = "https://twitter.com/intent/tweet";
@@ -42,13 +43,17 @@ function importDarkjs() {
     lib: 'darkjs.js',
     query: {
       callback: 'darkcall',
-      offset: 30,
     }.toQueryString()
   }));
   return darklib;
 }
 function darkcall() {
-  console.log('already implemented on home button');
+  const card = document.querySelector('.whatifs div:nth-of-type(2) .card');
+  card.darkjs = new Darkjs(card, {
+      className: "dk",
+      backgroundProps: ['background-color'],
+      offset:0,
+    });
 }
 window.darkcall = darkcall;
 document.head.append(importDarkjs());

@@ -1,3 +1,5 @@
+import customEvents from './element.events.js';
+
 Element.prototype.setClass = function (cls) {
     this.setAttribute("class", cls || "")
     return this;
@@ -84,7 +86,14 @@ Element.prototype.addText = function(html) {
     this.innerHTML = this.innerHTML + html;
     return this;
 }
+Element.prototype.getTag = function() {
+    return this.tagName.toLowerCase();
+}
 Element.prototype.on = function(event, callback, useCapture) {
+    const customEvent = customEvents[event];
+    if(customEvent) {
+        customEvent.bind(this)(callback.bind(this));
+    }
     this.addEventListener(event, callback.bind(this), useCapture);
     return this;
 }
@@ -109,16 +118,16 @@ Element.prototype.getPath = function() {
     return '#'+this.id;
   }
   if (this===document.body) {
-    return this.tagName.toLowerCase();
+    return this.getTag();
   }
   var n = 1;
   var siblings= this.parentNode.childNodes;
   for (var i= 0; i<siblings.length; i++) {
     var sibling= siblings[i];
     if (sibling===this) {
-      return this.parentNode.getPath()+' > '+this.tagName.toLowerCase()+':nth-of-type('+n+')';
+      return this.parentNode.getPath()+' > '+this.getTag()+':nth-of-type('+n+')';
     }
-    if (sibling.nodeType===1 && sibling.tagName===this.tagName) {
+    if (sibling.nodeType===1 && sibling.getTag()===this.getTag()) {
       n += 1;
     }
   }

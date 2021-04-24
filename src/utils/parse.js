@@ -13,6 +13,7 @@ Object.prototype.toQueryString = function() {
 }
 Object.prototype.fromQueryString = function(string) {
     let object = {};
+    if(!string) return object;
     const params = string.split('&');
     params.forEach((param) => {
         const kv = param.split('=');

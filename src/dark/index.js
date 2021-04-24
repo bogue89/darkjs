@@ -1,4 +1,4 @@
-import Darkjs from '../darkjs.js';
+import Darkjs from './darkjs.js';
 
 if(!window.Darkjs) {
     window.Darkjs = Darkjs;
