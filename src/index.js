@@ -36,7 +36,6 @@ function content() {
 document.body.appendChild(content());
 document.body.appendChild(footer());
 
-
 function importDarkjs() {
   const darklib = create(parse("script[defer][src={url}{lib}?{query}]", {
     url: location.href,
@@ -48,12 +47,7 @@ function importDarkjs() {
   return darklib;
 }
 function darkcall() {
-  const card = document.querySelector('.whatifs div:nth-of-type(2) .card');
-  card.darkjs = new Darkjs(card, {
-      className: "dk",
-      backgroundProps: ['background-color'],
-      offset:0,
-    });
+  console.log('prevented insta dark');
 }
 window.darkcall = darkcall;
 document.head.append(importDarkjs());
