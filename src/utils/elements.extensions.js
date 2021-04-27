@@ -1,4 +1,4 @@
-import customEvents from './element.events.js';
+import customEvents from './elements.events.js';
 
 Element.prototype.setClass = function (cls) {
     this.setAttribute("class", cls || "")

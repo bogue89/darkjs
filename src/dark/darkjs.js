@@ -14,7 +14,7 @@ class Darkjs {
     this.darkThreshold = options.darkThreshold ?? 0.3;
     this.brightThreshold = options.brightThreshold ?? 0.7;
     this.background_props = options.backgroundProps ?? ['fill', 'background-color']
-    this.exclude_elements = options.exclude_elements ?? ['STYLE', 'SCRIPT', 'IMG', '#text', 'VIDEO', 'AUDIO'];
+    this.exclude_elements = options.exclude_elements ?? ['style', 'script', 'img', 'text', 'video', 'audio'];
     
     this.observer = new MutationObserver(this.onChange.bind(this));
     this.isDark = false;
