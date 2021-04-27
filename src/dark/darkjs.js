@@ -21,7 +21,7 @@ class Darkjs {
     this.colors = {};
   }
   darkem() {
-    this.colors = {...this.colors, ...Colors.colorsInElement(this.root, Object.keys(Styles.props), this.brightThreshold, this.darkThreshold)};
+    this.colors = {...this.colors, ...Colors.colorsInElement(this.root, this.brightThreshold, this.darkThreshold)};
     Styles.addStylesToElementForColors(this.root, Object.keys(this.colors), this.root.getPath(), this.className, this.offset, this.animate);
     Styles.addClassesToElement(this.root, this.className, this.colors, this.background_props, this.exclude_elements, this.darkThreshold, this.brightThreshold);
 

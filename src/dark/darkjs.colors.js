@@ -1,16 +1,17 @@
 import colorjs from '../utils/color.js';
+import Styles from './darkjs.styles.js';
 
-function getColorsInsideElement(element, props) {
+function getColorsInsideElement(element) {
   let colors = {};
-  props.forEach(function(prop) {
-    const string = element.getStyle(prop);
+  const strings = Styles.getStylesFromElement(element);
+  strings.forEach(function(string) {
     if(/rgb/.test(string) && !colors[string]) {
       colors[string] = colorjs(string);
     }
   });
   const childs = element.children;
   for(var i=0; i<childs.length; i++) {
-    colors = {...colors, ...getColorsInsideElement(childs[i], props)};
+    colors = {...colors, ...getColorsInsideElement(childs[i])};
   }
   return colors;
 }
@@ -24,9 +25,9 @@ function filterColorsWithThresholds(colors, darkThreshold, brightThreshold) {
   });
   return filtered;
 }
-function colorsInElement(element, props, darkThreshold, brigthThreshold) {
+function colorsInElement(element, darkThreshold, brigthThreshold) {
   return filterColorsWithThresholds(
-    getColorsInsideElement(element, props),
+    getColorsInsideElement(element),
     darkThreshold,
     brigthThreshold
   );
