@@ -103,10 +103,37 @@ function colorBrightness() {
       )
     );
 }
+function gradientBg() {
+  return create('div')
+    .insert(create('p')
+      .setHtml('Color gradients as backgrounds')
+    )
+    .insert(create('div')
+      .addStyle('background', 'linear-gradient(-90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)')
+      .addStyle('height', '120px')
+    );
+}
+function reactiveDOM() {
+  let n = 1;
+  const list = create('div.list.d-flex.justify-content-around');
+  setInterval(() => {
+    if(n > 9) { n = 1 }
+    list.insert(create('p').setHtml(n++))
+    const items = list.querySelectorAll('*');
+    if(items.length > 4) { items[0].remove() }
+  }, 1000);
+  return create('div')
+    .insert(create('p')
+      .setHtml('Changing DOM elements')
+    )
+    .insert(list);
+}
 const cases = [
   card('Opacity', opacity()),
   card('Black logos', blackLogo()),
   card('Equal bright', colorBrightness(), true),
+  card('Gradients', gradientBg()),
+  card('Reactive', reactiveDOM()),
 ];
 function whatifs() {
   const element = create('div.row');

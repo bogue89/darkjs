@@ -22,3 +22,11 @@
 .whatifs .card-footer .btn:not([class*=dk-]):not([class*=darkjs-]) .fas {
     display: none;
 }
+.whatifs .card .list p {
+    background: #EEE;
+    text-align: center;
+    width: 40px;
+    padding: 8px 15px;
+    border-radius: 10px;
+    transition: all .2s linear;
+}

@@ -47,7 +47,7 @@ class Darkjs {
   onChange() {
     if(!this.isDark) return;
     this.darkem();
-    this.observer.disconnect();    
+    this.observer.disconnect();
   }
 }
 export default Darkjs;

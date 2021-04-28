@@ -19,7 +19,7 @@ const propsExclusives = {
 };
 const propsExcludes = {
   'border': {
-    'test': '^0\D+ |none', //regex match expresion
+    'test': '^0\D+|none', //regex match expresion
     'props': ['border-top-color', 'border-right-color', 'border-bottom-color', 'border-left-color']
   },
 };

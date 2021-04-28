@@ -14,7 +14,7 @@ function greetings() {
     );
 }
 function card() {
-  return create('div.card-preview')
+  return create('div.card.card-preview')
     .insert(create('h2')
       .setText("How to use")
     ).insert(create('p')
