@@ -38,8 +38,8 @@ document.body.appendChild(footer());
 
 function importDarkjs() {
   const darklib = create(parse("script[defer][src={url}{lib}?{query}]", {
-    url: location.href,
-    lib: 'darkjs.js',
+    url: location.origin,
+    lib: '/darkjs.js',
     query: {
       callback: 'darkcall',
     }.toQueryString()
