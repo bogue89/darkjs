@@ -10,7 +10,7 @@ import create from '../utils/elements.js';
 import parse from '../utils/parse.js';
 import links from '../refs/links.json';
 
-const import_preview_url = links.localhost+"/npm/darkjs@1.0.0/dist/darkjs.min.js";
+const import_preview_url = links.localhost+"/darkjs.js";
 const import_preview_params = "?callback=darkCallback";
 const import_preview_callback = "\n\t<script>\n\t\tdarkCallback = function() {\n\t\t\tdarkem(document.body);\n\t\t}\n\t</script>";
 const import_preview_body = "<head>\n\t...{callback}\n\t<script src=\"{url}{params}\"></script>\n</head>";
