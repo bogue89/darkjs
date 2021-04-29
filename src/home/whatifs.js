@@ -125,7 +125,7 @@ function reactiveDOM() {
     .insert(list);
 }
 const cases = [
-  card('Reactive', reactiveDOM()),
+  card('Reactive', reactiveDOM(), true),
   card('Black logos', blackLogo()),
   card('Equal bright', colorBrightness(), true),
   card('Gradients', gradientBg()),
