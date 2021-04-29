@@ -5,9 +5,9 @@
 :root {
     --bs-font-sans-serif: 'Poppins', sans-serif;
     --body-bg: #fff;
-    --body-color: #35415b;
+    --body-color: hsla(221, 16%, 28%, 1);
     --card-bg: #f4f5f6;
-    --card-color: #1E2533; 
+    --card-color: hsla(221, 16%, 28%, 1); 
 }
 body {
     font-weight: 400;
