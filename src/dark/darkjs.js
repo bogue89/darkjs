@@ -20,19 +20,16 @@ class Darkjs {
     this.isDark = false;
     this.colors = {};
   }
-  darkem() {
+  darkem(animate) {
     this.colors = {...this.colors, ...Colors.colorsInElement(this.root, this.brightThreshold, this.darkThreshold)};
-    Styles.addStylesToElementForColors(this.root, Object.keys(this.colors), this.root.getPath(), this.className, this.offset, this.animate);
+    Styles.addStylesToElementForColors(this.root, Object.keys(this.colors), this.root.getPath(), this.className, this.offset, animate ?? this.animate);
     Styles.addClassesToElement(this.root, this.className, this.colors, this.background_props, this.exclude_elements, this.darkThreshold, this.brightThreshold);
 
     this.isDark = true;
-    this.observer.observe(this.root, {
-      attributes: true,
-      childList: true,
-      characterData: false
-    });
+    this.addObserver()
   }
   darkemnt() {
+    this.observer.disconnect();
     Styles.removeStyleClassesInElement(this.root, this.className);
     this.colors = {};
     this.isDark = false;
@@ -44,10 +41,20 @@ class Darkjs {
       this.darkem();
     }
   }
-  onChange() {
-    if(!this.isDark) return;
-    this.darkem();
+  addObserver() {
+    this.observer.observe(this.root, {
+      attributes: true,
+      childList: true,
+      subtree: true
+    });
+  }
+  removeObserver() {
     this.observer.disconnect();
+  }
+  onChange() {
+    this.removeObserver();
+    if(!this.isDark) return;
+    this.darkem(false);
   }
 }
 export default Darkjs;
