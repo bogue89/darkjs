@@ -2,10 +2,11 @@
     margin-bottom: 1.5rem;
 }
 .whatifs .card {
-    margin: 0 auto 1rem;
+    margin: 0 auto 2rem;
     max-width: 320px;
     overflow: hidden;
     border-color: transparent;
+    text-align: center;
 }
 .whatifs .card-body {
     min-height: 280px;
@@ -15,11 +16,7 @@
     width: 100px;
     height: auto;
 }
-.whatifs .card-footer .btn {
-    display: block;
-    position: relative;
-}
-.whatifs .card-footer .btn:not([class*=dk-]):not([class*=darkjs-]) .fas {
+.whatifs .card:not([class*=dk-]):not([class*=darkjs-]) .card-footer .btn .fas {
     display: none;
 }
 .whatifs .card .list p {

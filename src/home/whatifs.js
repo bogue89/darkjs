@@ -16,7 +16,7 @@ function card(title, example, finished) {
       )
     )
     .insert(create('div.card-footer')
-      .insert(create('button[type=button].btn.btn-warning.w-100')
+      .insert(create('button[type=button].btn.btn-warning')
         .setHtml('<i class="fas fa-'+(finished ? "check text-success":"times text-danger")+'"></i> Test')
         .on('click', function() {
           const card = this.parentNode.parentNode;
@@ -59,7 +59,6 @@ function opacity() {
     );
 }
 function blackLogo() {
-  const size = 100;
   const svgCard = create('div');
   fetch(bat)
     .then((resp) => resp.text())
@@ -74,10 +73,7 @@ function blackLogo() {
       .insert(create(parse('img[src={url}][width=30%]', { url: bat})))
       .insert(svgCard)
       .insert(create('div')
-        .setStyle(parse('background: transparent url({url}) center center repeat-x; background-size:contain; width: {size}px; height: {size}px;', {
-          url: bat,
-          size: size
-        }))
+        .setStyle('background: transparent url('+bat+') center center repeat-x; background-size:contain; width: 30%; height: 100px;')
       )
     );
 }
@@ -129,11 +125,11 @@ function reactiveDOM() {
     .insert(list);
 }
 const cases = [
-  card('Opacity', opacity()),
+  card('Reactive', reactiveDOM()),
   card('Black logos', blackLogo()),
   card('Equal bright', colorBrightness(), true),
   card('Gradients', gradientBg()),
-  card('Reactive', reactiveDOM()),
+  card('Opacity', opacity()),
 ];
 function whatifs() {
   const element = create('div.row');

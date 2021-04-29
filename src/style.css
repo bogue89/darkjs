@@ -4,8 +4,10 @@
 
 :root {
     --bs-font-sans-serif: 'Poppins', sans-serif;
-    --bg-color: #fff;
+    --body-bg: #fff;
+    --body-color: #35415b;
     --card-bg: #f4f5f6;
+    --card-color: #1E2533; 
 }
 body {
     font-weight: 400;
@@ -14,7 +16,7 @@ body {
     color: #35415b;
 }
 h1,h2,h3 {
-    color: #35415b;
+    color: var(--body-color);
 }
 main.container {
     padding-top: 3rem;
@@ -22,23 +24,28 @@ main.container {
 }
 main.container .greetings,
 main.container .card-preview  {
-    margin-bottom: 1.5rem;
+    color: var(--body-color);
+    margin-bottom: 2rem;
+}
+.greetings {
+    margin: 0 auto;
+    max-width: 400px;
 }
 .card-preview {
-    background: #fff;
-    padding: 2rem;
-    border-radius: .5rem;
+    padding: 2rem 1.5rem;
 }
 pre {
     font-size: 12px;
-    color: #00990F;
-    background: rgba(0,0,0,0.6);
+    background: hsla(220, 41%, 90%, .4);
     padding: 10px;
     border-radius: .25rem; 
 }
 .card {
     background-color: var(--card-bg);
+    color: var(--card-color);
     border: 0;
+    border-radius: 1rem;
+    box-shadow: 0 .25rem 1rem 0 hsla(0, 0%, 0%, .14);
 }
 .lead {
     padding-bottom: 10px;
@@ -48,6 +55,7 @@ pre {
     font-weight: 500;
     border-radius: .5rem;
     transition: none;
+    min-width: 120px;
 }
 footer {
     background: #fff;

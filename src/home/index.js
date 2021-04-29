@@ -4,13 +4,15 @@ import previews from './code_previews.js';
 import whatifs from './whatifs.js';
 
 function greetings() {
-  return create('div.greetings')
-    .insert(create('h1')
-      .setText('Dark.js')
-    ).insert(create('p.lead')
-      .setText("Allow your users to navigate on a dark themed version of your website.")
-    ).insert(create('a.btn.btn-primary.w-100[href='+links.github+'][target=_blank]')
-      .setHtml('Download on Github <i class="fab fa-github"></i>')
+  return create('div.greetings.h-100.d-flex.align-items-center')
+    .insert(create('div')
+      .insert(create('h1')
+        .setText('Dark.js')
+      ).insert(create('p.lead')
+        .setText("Allow your users to navigate on a dark themed version of your website.")
+      ).insert(create('a.btn.btn-primary.w-100[href='+links.github+'][target=_blank]')
+        .setHtml('<i class="fab fa-github"></i> Download on Github')
+      )
     );
 }
 function card() {
@@ -24,7 +26,7 @@ function card() {
       .setText("... or you can manually target elements")
     ).insert(previews.async())
     .insert(create('div.text-center')
-      .insert(create('button.btn.btn-info[type=button]')
+      .insert(create('button.btn.btn-outline-primary[type=button]')
         .setText("Demo")
         .on('click', (e) => {
           if(typeof Darkjs == 'undefined') {
