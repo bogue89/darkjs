@@ -24,7 +24,7 @@ const propsExcludes = {
   },
 };
 const propClass   = "{className}-{prop}-{level}";
-const propStyle   = "{path}.{className}.{styleClass}, {path}.{className} .{styleClass} { {prop}: {color} !important; } \n";
+const propStyle   = "{path}.{className}.{styleClass}, {path}.{className} :not(.{className}) .{styleClass}:not(.{className}) { {prop}: {color} !important; } \n";
 
 function getPropsForElement(element) {  
   let filtered = Object.keys(props);
@@ -86,15 +86,21 @@ function createStylesForColors(colors, path, className, offset, animated) {
     });
     return styles;
 }
-function addStylesToElementForColors(element, colors, path, className, offset = 0, animated = true) {
-  removeStyleInElement(element, className);
+function addStylesToElementForColors(element, className, path, colors, offset = 0, animated = true) {
   const styles = createStylesForColors(colors, path, className, offset, animated);
   element.insert(styles, 0);
 }
-function addClassesToElement(element, className, colors, background_props, exclude_elements, darkThreshold, brightThreshold) {
+function addStylesToElement(element, className, colors, background_props, exclude_elements, darkThreshold, brightThreshold, offset, animate) {
+  element.addClass(className);
+  //removeStyleInsideElement(element, className);
+  removeStylesFromElement(element, className);
+  addStylesToElementForColors(element, className, element.getPath(), Object.keys(colors), offset, animate);
+  addClassesToElement(element, className, colors, background_props, exclude_elements, darkThreshold, brightThreshold);
+}
+function addClassesToElement(element, className, colors, background_props, exclude_elements, darkThreshold, brightThreshold) {
   const levels = Object.values(colors);
   const tagName = element.getTag();
-
+  
   getPropsForElement(element).forEach( prop => {
     const string = element.getStyle(prop);
     const color = colors[string];
@@ -103,7 +109,6 @@ function addClassesToElement(element, className, colors, background_props, exclu
       if(isApplicable) {
         const level = levels.indexOf(color);
         element
-          .addClass(className)
           .addClass(createPropClass(prop, level+1, className));
       }
     } 
@@ -111,12 +116,12 @@ function addClassesToElement(element, className, colors, background_props, exclu
   const childs = element.children;
   for(var i=0; i<childs.length; i++) {
     const child = childs[i];
-    if(exclude_elements.indexOf(child.getTag())<0) {
+    if(child.hasClass(className)==false && exclude_elements.indexOf(child.getTag())<0) {
       addClassesToElement(child, className, colors, background_props, exclude_elements, darkThreshold, brightThreshold);
     }
   }
 }
-function removeStyleInElement(element, className) {
+function removeStyleInsideElement(element, className) {
   const childs = element.children;
   for(var i=0; i<childs.length; i++) {
     const child = childs[i];
@@ -125,17 +130,22 @@ function removeStyleInElement(element, className) {
     }
   }
 }
+function removeStylesFromElement(element, className) {
+  removeStyleInsideElement(element, className);
+  removeStyleClassesInElement(element, className);
+}
 function removeStyleClassesInElement(element, className) {
   element.removeClassMatching(className+"-[\\w\-]+");
-  const childs = element.querySelectorAll ('.'+className) || [];
+  const childs = element.children || [];
   for(var i=0; i<childs.length; i++) {
-    removeStyleClassesInElement(childs[i], className);
+    const child = childs[i];
+    if(child.hasClass(className)==false) {
+      removeStyleClassesInElement(child, className);
+    }
   }
 }
 export default {
-  props,
   getStylesFromElement,
-  addStylesToElementForColors,
-  addClassesToElement,
-  removeStyleClassesInElement
+  addStylesToElement,
+  removeStylesFromElement
 };

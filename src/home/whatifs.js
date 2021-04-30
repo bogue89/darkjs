@@ -22,9 +22,7 @@ function card(title, example, finished) {
           const card = this.parentNode.parentNode;
           if(!card.darkjs) {
             card.darkjs = new Darkjs(card, {
-              className: "dk",
-              backgroundProps: ['background-color'],
-              offset:0,
+              backgroundProps: ['background-color']
             });
           }
           card.darkjs.toggle();

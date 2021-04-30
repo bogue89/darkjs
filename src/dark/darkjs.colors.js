@@ -1,7 +1,7 @@
 import colorjs from '../utils/color.js';
 import Styles from './darkjs.styles.js';
 
-function getColorsInsideElement(element) {
+function getColorsInsideElement(element, className) {
   let colors = {};
   const strings = Styles.getStylesFromElement(element);
   strings.forEach(function(string) {
@@ -11,7 +11,10 @@ function getColorsInsideElement(element) {
   });
   const childs = element.children;
   for(var i=0; i<childs.length; i++) {
-    colors = {...colors, ...getColorsInsideElement(childs[i])};
+    const child = childs[i];
+    if(!child.hasClass(className)) {
+      colors = {...colors, ...getColorsInsideElement(child, className)};
+    }
   }
   return colors;
 }
@@ -25,9 +28,9 @@ function filterColorsWithThresholds(colors, darkThreshold, brightThreshold) {
   });
   return filtered;
 }
-function colorsInElement(element, darkThreshold, brigthThreshold) {
+function colorsInElement(element, className, darkThreshold, brigthThreshold) {
   return filterColorsWithThresholds(
-    getColorsInsideElement(element),
+    getColorsInsideElement(element, className),
     darkThreshold,
     brigthThreshold
   );
