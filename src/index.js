@@ -1,6 +1,7 @@
 
 import './style.css';
 
+import _package from '../package.json';
 import create from './utils/elements.js';
 import parse from './utils/parse.js';
 import home from './home/index.js';
@@ -38,8 +39,8 @@ document.body.appendChild(footer());
 
 function importDarkjs() {
   const darklib = create(parse("script[defer][src={url}{lib}?{query}]", {
-    url: location.origin,
-    lib: '/darkjs.js',
+    url: '.',
+    lib: `/darkjs@${_package.version}.js`,
     query: {
       callback: 'darkcall',
     }.toQueryString()
@@ -47,7 +48,7 @@ function importDarkjs() {
   return darklib;
 }
 function darkcall() {
-  console.log('prevented insta dark');
+  //prevented insta-dark
 }
 window.darkcall = darkcall;
 document.head.append(importDarkjs());

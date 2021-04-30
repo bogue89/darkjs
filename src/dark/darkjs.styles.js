@@ -24,7 +24,7 @@ const propsExcludes = {
   },
 };
 const propClass   = "{className}-{prop}-{level}";
-const propStyle   = "{path}.{className}.{styleClass}, {path}.{className} :not(.{className}) .{styleClass}:not(.{className}) { {prop}: {color} !important; } \n";
+const propStyle   = "{path}.{className}.{styleClass}, {path}.{className} .{styleClass} { {prop}: {color} !important; } \n";
 
 function getPropsForElement(element) {  
   let filtered = Object.keys(props);

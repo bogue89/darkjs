@@ -8,7 +8,6 @@ import 'highlight.js/styles/railscasts.css';
 
 import create from '../utils/elements.js';
 import parse from '../utils/parse.js';
-import links from '../refs/links.json';
 
 const import_preview_url = location.origin+"/darkjs.js";
 const import_preview_params = "?callback=darkCallback";

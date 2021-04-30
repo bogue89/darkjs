@@ -1,7 +1,3 @@
-import create   from '../utils/elements.js';
-import parse    from '../utils/parse.js';
-import colorjs  from '../utils/color.js';
-
 import Styles   from './darkjs.styles.js';
 import Colors   from './darkjs.colors.js';
 
@@ -27,8 +23,10 @@ class Darkjs {
     });
   }
   darkem(animate) {
-    this.colors = {...this.colors, ...Colors.colorsInElement(this.root, this.className, this.brightThreshold, this.darkThreshold)};
-    //console.log(this.root.getTag(), Object.keys(this.colors));
+    this.colors = {
+      ...this.colors, 
+      ...Colors.colorsInElement(this.root, this.className, this.brightThreshold, this.darkThreshold)
+    };
     Styles.addStylesToElement(this.root, 
       this.className,
       this.colors,

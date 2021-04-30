@@ -24,6 +24,7 @@
     "webpack-nano": "^1.1.1"
   },
   "dependencies": {
+    "file-reader": "^1.1.1",
     "highlight.js": "^10.7.2"
   }
 }

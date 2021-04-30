@@ -2,6 +2,7 @@
   "index.css": "index.css",
   "index.js": "index.js",
   "darkjs.js": "darkjs.js",
+  "darkjs_current.js": "darkjs@1.0.0.js",
   "bat.svg": "bat.svg",
   "index.html": "index.html"
 }

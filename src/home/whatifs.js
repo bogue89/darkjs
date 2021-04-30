@@ -1,7 +1,6 @@
 import parse from '../utils/parse.js';
 import create from '../utils/elements.js';
 import colorjs from '../utils/color.js';
-import Darkjs from '../dark/darkjs.js';
 import bat from '../assets/bat.svg';
 import './whatifs.css';
 
@@ -19,6 +18,10 @@ function card(title, example, finished) {
       .insert(create('button[type=button].btn.btn-warning')
         .setHtml('<i class="fas fa-'+(finished ? "check text-success":"times text-danger")+'"></i> Test')
         .on('click', function() {
+          if(typeof Darkjs == 'undefined') {
+            alert('you need to import the lib');
+            return;
+          }
           const card = this.parentNode.parentNode;
           if(!card.darkjs) {
             card.darkjs = new Darkjs(card, {

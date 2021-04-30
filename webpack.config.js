@@ -1,27 +1,31 @@
+const package = require('./package.json');
 const path = require('path');
-
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const options = {
-  publicPath: '',
-};
+
 var config = {
   mode: 'development',
   entry: {
     index: './src/index.js',
-    darkjs: './src/dark/index.js',
+    darkjs: './src/dark/loader.js',
+    darkjs_current: './src/dark/index.js',
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Darktheme',
+      title: 'Darkjs',
       favicon: './src/assets/bat.svg',
+      chunks: ['index']
     }),
-    new WebpackManifestPlugin(options),
-    new MiniCssExtractPlugin()
+    new WebpackManifestPlugin({
+      publicPath: '',
+    }),
+    new MiniCssExtractPlugin(),
   ],
   output: {
-    filename: '[name].js',
+    filename: (c) => { 
+      return c.runtime=='darkjs_current' ? 'darkjs@'+package.version+'.js':'[name].js'
+    },
     path: path.resolve(__dirname, 'dist'),
     clean: true,
   },
