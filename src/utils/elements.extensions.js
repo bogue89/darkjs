@@ -70,6 +70,9 @@ Element.prototype.contains = function(target) {
     }
     return false;
 }
+Element.prototype.getText = function() {
+    return this.innerText;
+}
 Element.prototype.setText = function(text) {
     this.innerText = text;
     return this;
@@ -77,6 +80,9 @@ Element.prototype.setText = function(text) {
 Element.prototype.addText = function(text) {
     this.innerText = this.innerText + text;
     return this;
+}
+Element.prototype.getHtml = function() {
+    return this.innerHTML;
 }
 Element.prototype.setHtml = function(html) {
     this.innerHTML = html;

@@ -14,7 +14,6 @@ class Darkjs {
     
     this.isDark = false;
     this.colors = {};
-
     this.observer = new MutationObserver(this.onChange.bind(this));
     this.observer.observe(this.root, {
       attributes: true,
@@ -23,10 +22,15 @@ class Darkjs {
     });
   }
   darkem(animate) {
+    
+
+    this.isDark = true;
+    this.isMutating = true;
     this.colors = {
       ...this.colors, 
       ...Colors.colorsInElement(this.root, this.className, this.brightThreshold, this.darkThreshold)
     };
+    //console.log(this.root.getTag(), animate ?? this.animate);
     Styles.addStylesToElement(this.root, 
       this.className,
       this.colors,
@@ -37,7 +41,7 @@ class Darkjs {
       this.offset,
       animate ?? this.animate
     );
-    this.isDark = true;
+    setTimeout(() => this.isMutating = false, 1);
   }
   darkemnt() {
     this.isDark = false;
@@ -52,19 +56,16 @@ class Darkjs {
     }
   }
   onChange(mutationsList, observe) {
-    let isNested = false;
+    if(!this.isDark || this.isMutating) return;
     for(const mutation of mutationsList) {
-      if(this.isOwnMutation(mutation.target)) {
-        isNested = true;
+      if(this.isNestedMutation(mutation.target)) {
+        return;
       }
     }
-    if(!this.isDark || this.isMutating || isNested) return;
-    this.isMutating = true;
     this.darkem(false);
-    setTimeout(() => this.isMutating = false, 1);
   }
-  isOwnMutation(element) {
-    return element!=this.root && (element.hasClass(this.className) || this.isOwnMutation(element.parentNode));
+  isNestedMutation(element) {
+    return element!=this.root && (element.hasClass(this.className) || this.isNestedMutation(element.parentNode));
   }
 }
 export default Darkjs;

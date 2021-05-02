@@ -25,6 +25,7 @@ const propsExcludes = {
 };
 const propClass   = "{className}-{prop}-{level}";
 const propStyle   = "{path}.{className}.{styleClass}, {path}.{className} .{styleClass} { {prop}: {color} !important; } \n";
+const propAnimate = "{path}.{className} { transition: all .2s ease !important; } \n";
 
 function getPropsForElement(element) {  
   let filtered = Object.keys(props);
@@ -78,7 +79,7 @@ function createStylePropsForColor(color, level, path, className) {
 function createStylesForColors(colors, path, className, offset, animated) {
     const styles = create('style[class='+className+']');
     if(animated) {
-      styles.addText(parse(".{className} { transition: all .2s ease !important; } \n", { className }));
+      styles.addText(parse(propAnimate, { path, className}));
     }
     colors.forEach((rgba, n)  => {
       const color = Colors.invertBrightness(colorjs(rgba), offset);
@@ -92,7 +93,6 @@ function addStylesToElementForColors(element, className, path, colors, offset = 
 }
 function addStylesToElement(element, className, colors, background_props, exclude_elements, darkThreshold, brightThreshold, offset, animate) {
   element.addClass(className);
-  //removeStyleInsideElement(element, className);
   removeStylesFromElement(element, className);
   addStylesToElementForColors(element, className, element.getPath(), Object.keys(colors), offset, animate);
   addClassesToElement(element, className, colors, background_props, exclude_elements, darkThreshold, brightThreshold);
@@ -101,6 +101,7 @@ function addClassesToElement(element, className, colors, background_props, exclu
   const levels = Object.values(colors);
   const tagName = element.getTag();
   
+  removeClassesOnElement(element, className);
   getPropsForElement(element).forEach( prop => {
     const string = element.getStyle(prop);
     const color = colors[string];
@@ -121,7 +122,12 @@ function addClassesToElement(element, className, colors, background_props, exclu
     }
   }
 }
-function removeStyleInsideElement(element, className) {
+
+function removeStylesFromElement(element, className) {
+  removeStyleOnElement(element, className);
+  removeClassesInsideElement(element, className);
+}
+function removeStyleOnElement(element, className) {
   const childs = element.children;
   for(var i=0; i<childs.length; i++) {
     const child = childs[i];
@@ -130,19 +136,18 @@ function removeStyleInsideElement(element, className) {
     }
   }
 }
-function removeStylesFromElement(element, className) {
-  removeStyleInsideElement(element, className);
-  removeStyleClassesInElement(element, className);
-}
-function removeStyleClassesInElement(element, className) {
-  element.removeClassMatching(className+"-[\\w\-]+");
+function removeClassesInsideElement(element, className) {
+  removeClassesOnElement(element, className);
   const childs = element.children || [];
   for(var i=0; i<childs.length; i++) {
     const child = childs[i];
     if(child.hasClass(className)==false) {
-      removeStyleClassesInElement(child, className);
+      removeClassesInsideElement(child, className);
     }
   }
+}
+function removeClassesOnElement(element, className) {
+  element.removeClassMatching(className+"-[\\w\-]+");
 }
 export default {
   getStylesFromElement,
