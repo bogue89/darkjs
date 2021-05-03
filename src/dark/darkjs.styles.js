@@ -152,5 +152,6 @@ function removeClassesOnElement(element, className) {
 export default {
   getStylesFromElement,
   addStylesToElement,
-  removeStylesFromElement
+  removeStylesFromElement,
+  removeClassesInsideElement
 };

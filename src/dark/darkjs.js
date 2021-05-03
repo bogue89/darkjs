@@ -45,7 +45,7 @@ class Darkjs {
   }
   darkemnt() {
     this.isDark = false;
-    Styles.removeStylesFromElement(this.root, this.className);
+    Styles.removeClassesInsideElement(this.root, this.className);
     this.colors = {};
   }
   toggle() {

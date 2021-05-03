@@ -5,7 +5,7 @@ import bat from '../assets/bat.svg';
 import './whatifs.css';
 
 function card(title, example, finished) {
-  return create('div.card')
+  return create('div.card.darkjs')
     .insert(create('div.card-body')
       .insert(create('h3')
         .setText(title)
