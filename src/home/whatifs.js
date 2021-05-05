@@ -1,11 +1,12 @@
+import './whatifs.css';
+
 import parse from '../utils/parse.js';
 import create from '../utils/elements.js';
 import colorjs from '../utils/color.js';
 import bat from '../assets/bat.svg';
-import './whatifs.css';
 
 function card(title, example, finished) {
-  return create('div.card.darkjs')
+  return create('div.card')
     .insert(create('div.card-body')
       .insert(create('h3')
         .setText(title)
@@ -23,12 +24,9 @@ function card(title, example, finished) {
             return;
           }
           const card = this.parentNode.parentNode;
-          if(!card.darkjs) {
-            card.darkjs = new Darkjs(card, {
-              backgroundProps: ['background-color']
-            });
+          if(card.darkjs) {
+            card.darkjs.toggle();
           }
-          card.darkjs.toggle();
         })
       )
     );

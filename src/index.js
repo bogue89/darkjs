@@ -1,11 +1,11 @@
 
 import './style.css';
+import './utils/objects.extensions.js';
 
 import _package from '../package.json';
 import create from './utils/elements.js';
 import parse from './utils/parse.js';
 import home from './home/index.js';
-import Darkjs from './dark/darkjs.js';
 
 function tweetIntent(url, text) {
   var href = "https://twitter.com/intent/tweet";
@@ -38,7 +38,7 @@ document.body.appendChild(content());
 document.body.appendChild(footer());
 
 function importDarkjs() {
-  const darklib = create(parse("script[defer][src={url}{lib}?{query}]", {
+  const darklib = create(parse("script[src={url}{lib}?{query}]", {
     url: '.',
     lib: `/darkjs@${_package.version}.js`,
     query: {
@@ -48,7 +48,18 @@ function importDarkjs() {
   return darklib;
 }
 function darkcall() {
-  //prevented insta-dark
+  let cards = document.querySelectorAll('.whatifs .card');
+  cards.forEach((card, n) => {
+    card.darkjs = new Darkjs(card, {
+      backgroundProps: ['background-color'],
+      cookieKey: false,
+    });
+  });
+  //dark initialization
+  document.body.darkjs = new Darkjs(document.body, {
+    backgroundProps: ['background-color'],
+    cookieKey: false,
+  });
 }
 window.darkcall = darkcall;
 document.head.append(importDarkjs());

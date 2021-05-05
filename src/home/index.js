@@ -1,3 +1,5 @@
+import './index.css';
+
 import create from '../utils/elements.js';
 import links from '../refs/links.json';
 import previews from './code_previews.js';
@@ -27,7 +29,7 @@ function card() {
     ).insert(previews.async())
     .insert(create('div.text-center')
       .insert(create('button.btn.btn-outline-primary[type=button]')
-        .setText("Demo")
+        .setText("")
         .on('click', (e) => {
           if(typeof Darkjs == 'undefined') {
             alert('you need to import the lib');
@@ -37,7 +39,6 @@ function card() {
             document.body.darkjs = new Darkjs(document.body);
           }
           document.body.darkjs.toggle();
-          e.srcElement.setText(document.body.darkjs.isDark ? 'Undo':'Demo');
         })
       )
     );    
