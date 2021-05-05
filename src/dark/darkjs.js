@@ -1,3 +1,4 @@
+import Settings from './darkjs.settings.js';
 import Styles   from './darkjs.styles.js';
 import Colors   from './darkjs.colors.js';
 
@@ -7,6 +8,7 @@ class Darkjs {
     this.animate = options.animate ?? true;
     this.offset = options.offset ?? 10;
     this.className = options.className || "darkjs";
+    this.cookieKey = options.cookieKey ?? "darkmode";
     this.darkThreshold = options.darkThreshold ?? 0.3;
     this.brightThreshold = options.brightThreshold ?? 0.7;
     this.background_props = options.backgroundProps ?? ['fill', 'background-color']
@@ -20,17 +22,27 @@ class Darkjs {
       childList: true,
       subtree: true
     });
+    this.init();
+  }
+  init() {
+    this.root.addClass(this.className);
+    let darkem = false;
+    if(this.cookieKey) {
+      darkem = Settings.readCookie(this.cookieKey);
+    } else {
+      darkem = Settings.isDarkmode();
+    }
+    if(darkem) {
+      this.darkem();
+    }
   }
   darkem(animate) {
-    
-
     this.isDark = true;
     this.isMutating = true;
     this.colors = {
       ...this.colors, 
       ...Colors.colorsInElement(this.root, this.className, this.brightThreshold, this.darkThreshold)
     };
-    //console.log(this.root.getTag(), animate ?? this.animate);
     Styles.addStylesToElement(this.root, 
       this.className,
       this.colors,
@@ -42,11 +54,13 @@ class Darkjs {
       animate ?? this.animate
     );
     setTimeout(() => this.isMutating = false, 1);
+    Settings.writeCookie(this.cookieKey, 1);
   }
   darkemnt() {
     this.isDark = false;
     Styles.removeClassesInsideElement(this.root, this.className);
     this.colors = {};
+    Settings.writeCookie(this.cookieKey, 0);
   }
   toggle() {
     if(this.isDark) {

@@ -1,3 +1,4 @@
+import '../utils/objects.extensions.js';
 import Darkjs from './darkjs.js';
 
 if(!window.Darkjs) {
@@ -11,10 +12,7 @@ if(!window.Darkjs) {
     window.Darkjs.callback = window[window.Darkjs.options.callback];
     if(!window.Darkjs.callback) {
         window.Darkjs.callback = function() {
-            window.addEventListener('load', function() {
-                document.body.darkjs = new Darkjs(document.body, window.Darkjs.options);
-                document.body.darkjs.darkem();
-            });
+            document.body.darkjs = new Darkjs(document.body, window.Darkjs.options);
         }
     }
     window.Darkjs.callback();
