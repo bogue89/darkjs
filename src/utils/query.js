@@ -1,13 +1,13 @@
 import './strings.extensions.js';
 
-Object.prototype.toQueryString = function() {
+function toQueryString(object) {
     let query = [];
-    Object.keys(this).forEach((key) => {
-        query.push([(key+"").url_encode(), (this[key]+"").url_encode()].join('='));
+    Object.keys(object).forEach((key) => {
+        query.push([(key+"").url_encode(), (object[key]+"").url_encode()].join('='));
     })
     return query.join('&');
 }
-Object.prototype.fromQueryString = function(string) {
+function fromQueryString(string) {
     let object = {};
     if(!string) return object;
     const params = string.split('&');
@@ -19,3 +19,4 @@ Object.prototype.fromQueryString = function(string) {
     })
     return object;
 }
+export default {toQueryString, fromQueryString}

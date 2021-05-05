@@ -1,6 +1,6 @@
 
 import './style.css';
-import './utils/objects.extensions.js';
+import query from './utils/query.js';
 
 import _package from '../package.json';
 import create from './utils/elements.js';
@@ -10,7 +10,7 @@ import home from './home/index.js';
 function tweetIntent(url, text) {
   var href = "https://twitter.com/intent/tweet";
   const params = { text, url, via: 'bogue89'};
-  return href+"?"+params.toQueryString();
+  return href+"?"+query.toQueryString(params);
 }
 function footer() {
   return create('footer.fixed-bottom.text-center')
@@ -41,9 +41,9 @@ function importDarkjs() {
   const darklib = create(parse("script[src={url}{lib}?{query}]", {
     url: '.',
     lib: `/darkjs@${_package.version}.js`,
-    query: {
+    query: query.toQueryString({
       callback: 'darkcall',
-    }.toQueryString()
+    })
   }));
   return darklib;
 }
@@ -56,7 +56,7 @@ function darkcall() {
   });
   //dark initialization
   document.body.darkjs = new Darkjs(document.body, {
-    cookieKey: false,
+    //cookieKey: false,
   });
 }
 window.darkcall = darkcall;
