@@ -26,10 +26,8 @@ class Darkjs {
   }
   init() {
     this.root.addClass(this.className);
-    let darkem = false;
-    if(this.cookieKey) {
-      darkem = Settings.readCookie(this.cookieKey);
-    } else {
+    let darkem = Settings.readCookie(this.cookieKey);
+    if(darkem === null) {
       darkem = Settings.isDarkmode();
     }
     if(darkem) {
