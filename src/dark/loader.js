@@ -10,7 +10,7 @@ function importDarkjs() {
     }
   });
   if(!src) return '';
-  const darklib = create(parse("script[defer][src={src}]", {
+  const darklib = create(parse("script[src={src}]", {
     src: src.replace('.js', `@${_package.version}.js`)
   }));
   return darklib;

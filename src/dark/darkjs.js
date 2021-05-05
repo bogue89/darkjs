@@ -11,7 +11,7 @@ class Darkjs {
     this.cookieKey = options.cookieKey ?? "darkmode";
     this.darkThreshold = options.darkThreshold ?? 0.3;
     this.brightThreshold = options.brightThreshold ?? 0.7;
-    this.background_props = options.backgroundProps ?? ['fill', 'background-color']
+    this.background_props = options.backgroundProps ?? ['background-color']
     this.exclude_elements = options.exclude_elements ?? ['style', 'script', 'img', 'text', 'video', 'audio'];
     
     this.isDark = false;
