@@ -15,7 +15,7 @@ var config = {
     new HtmlWebpackPlugin({
       title: 'Darkjs',
       favicon: './src/assets/bat.svg',
-      chunks: ['index']
+      chunks: ['index'],
     }),
     new WebpackManifestPlugin({
       publicPath: '',

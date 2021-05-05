@@ -63,6 +63,12 @@ footer {
 footer p:last-child {
     margin: 0;
 }
+body .card-preview button::before {
+    content: 'Demo';
+}
+body[class*=darkjs-] .card-preview button::before {
+    content: 'Undo';
+}
 /*
 
 Railscasts-like style (c) Visoft, Inc. (Damien White)
