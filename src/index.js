@@ -51,13 +51,11 @@ function darkcall() {
   let cards = document.querySelectorAll('.whatifs .card');
   cards.forEach((card, n) => {
     card.darkjs = new Darkjs(card, {
-      cookieKey: false,
+      storeKey: `darkmode-card-${n}`,
     });
   });
   //dark initialization
-  document.body.darkjs = new Darkjs(document.body, {
-    //cookieKey: false,
-  });
+  document.body.darkjs = new Darkjs(document.body);
 }
 window.darkcall = darkcall;
 document.head.append(importDarkjs());

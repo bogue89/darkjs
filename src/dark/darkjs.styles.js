@@ -23,9 +23,7 @@ const propsExcludes = {
     'props': ['border-top-color', 'border-right-color', 'border-bottom-color', 'border-left-color']
   },
 };
-const propClass   = "{className}-{prop}-{level}";
-const propStyle   = "{path}.{className}.{styleClass}, {path}.{className} .{styleClass} { {prop}: {color} !important; } \n";
-const propAnimate = "{path}.{className} { transition: all .2s ease !important; } \n";
+const propStyle   = "{selector} {\n\t{prop}: {color} !important;\n}\n";
 
 function getPropsForElement(element) {  
   let filtered = Object.keys(props);
@@ -46,112 +44,46 @@ function getPropsForElement(element) {
   });
   return filtered;
 }
-function getStylesFromElement(element) {
-  let strings = [];
-  getPropsForElement(element).forEach( prop => {
-    strings.push(element.getStyle(prop));
-  })
-  return strings;
-}
-function createPropClass(prop, level, className) {
-  return parse(propClass, {
-    className,
-    level,
-    prop: props[prop],
-  });
-}
-function createPropStyle(prop, color, level, path, className) {
-  return parse(propStyle, {
-      path,
-      className,
-      prop,
-      color,
-      styleClass: createPropClass(prop, level, className),
+function createStylesForProps(map, background_props, darkThreshold, brightThreshold) {
+  let styles = "";
+  Object.keys(map.elements).forEach(prop => {
+    const isApplicable = background_props.indexOf(prop)<0 ? Colors.isDark(map.color, darkThreshold):Colors.isBright(map.color, brightThreshold);
+    if(!isApplicable) return;
+    let selector = [];
+    map.elements[prop].forEach( element => {
+      selector.push(element.getPath());
     });
-}
-function createStylePropsForColor(color, level, path, className) {
-  let stylesProps = "";
-  Object.keys(props).forEach((prop) => {
-    stylesProps += createPropStyle(prop, color, level, path, className);
-  });
-  return stylesProps;
-}
-function createStylesForColors(colors, path, className, offset, animated) {
-    const styles = create('style[class='+className+']');
-    if(animated) {
-      styles.addText(parse(propAnimate, { path, className}));
-    }
-    colors.forEach((rgba, n)  => {
-      const color = Colors.invertBrightness(colorjs(rgba), offset);
-      styles.addText(createStylePropsForColor(color, n+1, path, className));
+    styles += parse(propStyle, { 
+      selector: selector.join(",\n"),
+      prop: prop,
+      color: map.inverted.toRgba()
     });
-    return styles;
-}
-function addStylesToElementForColors(element, className, path, colors, offset = 0, animated = true) {
-  const styles = createStylesForColors(colors, path, className, offset, animated);
-  element.insert(styles, 0);
-}
-function addStylesToElement(element, className, colors, background_props, exclude_elements, darkThreshold, brightThreshold, offset, animate) {
-  element.addClass(className);
-  removeStylesFromElement(element, className);
-  addStylesToElementForColors(element, className, element.getPath(), Object.keys(colors), offset, animate);
-  addClassesToElement(element, className, colors, background_props, exclude_elements, darkThreshold, brightThreshold);
-}
-function addClassesToElement(element, className, colors, background_props, exclude_elements, darkThreshold, brightThreshold) {
-  const levels = Object.values(colors);
-  const tagName = element.getTag();
-  
-  removeClassesOnElement(element, className);
-  getPropsForElement(element).forEach( prop => {
-    const string = element.getStyle(prop);
-    const color = colors[string];
-    if(color) {
-      const isApplicable = background_props.indexOf(prop)<0 ? Colors.isDark(color, darkThreshold):Colors.isBright(color, brightThreshold);
-      if(isApplicable) {
-        const level = levels.indexOf(color);
-        element
-          .addClass(createPropClass(prop, level+1, className));
-      }
-    } 
   })
-  const childs = element.children;
-  for(var i=0; i<childs.length; i++) {
-    const child = childs[i];
-    if(child.hasClass(className)==false && exclude_elements.indexOf(child.getTag())<0) {
-      addClassesToElement(child, className, colors, background_props, exclude_elements, darkThreshold, brightThreshold);
-    }
+  return styles;
+}
+function createStylesForColors(colors, className, background_props, darkThreshold, brightThreshold, animated) {
+  const styles = create('style[class='+className+']');
+  Object.keys(colors).forEach( rgba => {
+    styles.addText(createStylesForProps(colors[rgba], background_props, darkThreshold, brightThreshold, animated))
+  });
+  return styles;
+}
+function createStylesForElement(colors, className, background_props, darkThreshold, brightThreshold, animated = true) {
+  return createStylesForColors(colors, className, background_props, darkThreshold, brightThreshold, animated);
+}
+function createStylesFromText(text, className) {
+  return create('style[class='+className+']').setText(text)
+}
+function getColorStyle(element, prop) {
+  const string = element.getStyle(prop);
+  if(/^rgb/.test(string)) {
+    return string;
   }
-}
-
-function removeStylesFromElement(element, className) {
-  removeStyleOnElement(element, className);
-  removeClassesInsideElement(element, className);
-}
-function removeStyleOnElement(element, className) {
-  const childs = element.children;
-  for(var i=0; i<childs.length; i++) {
-    const child = childs[i];
-    if(child.getTag()=='style' && child.className.match(className)) {
-      child.remove();
-    }
-  }
-}
-function removeClassesInsideElement(element, className) {
-  removeClassesOnElement(element, className);
-  const childs = element.children || [];
-  for(var i=0; i<childs.length; i++) {
-    const child = childs[i];
-    if(child.hasClass(className)==false) {
-      removeClassesInsideElement(child, className);
-    }
-  }
-}
-function removeClassesOnElement(element, className) {
-  element.removeClassMatching(className+"-[\\w\-]+");
+  return false;
 }
 export default {
-  getStylesFromElement,
-  addStylesToElement,
-  removeStylesFromElement,
-  removeClassesInsideElement
+  createStylesFromText,
+  createStylesForElement,
+  getPropsForElement,
+  getColorStyle
 };

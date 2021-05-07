@@ -1,6 +1,5 @@
 import Settings from './darkjs.settings.js';
-import Styles   from './darkjs.styles.js';
-import Colors   from './darkjs.colors.js';
+import Elements from './darkjs.elements.js';
 
 class Darkjs {
   constructor(element, options = {}) {
@@ -8,7 +7,7 @@ class Darkjs {
     this.animate = options.animate ?? true;
     this.offset = options.offset ?? 10;
     this.className = options.className || "darkjs";
-    this.cookieKey = options.cookieKey ?? "darkmode";
+    this.storeKey = options.storeKey ?? "darkmode";
     this.darkThreshold = options.darkThreshold ?? 0.3;
     this.brightThreshold = options.brightThreshold ?? 0.7;
     this.background_props = options.backgroundProps ?? ['background-color']
@@ -26,39 +25,55 @@ class Darkjs {
   }
   init() {
     this.root.addClass(this.className);
-    let darkem = Settings.readCookie(this.cookieKey);
+    let darkem = Settings.readCookie(this.storeKey);
     if(darkem === null) {
       darkem = Settings.isDarkmode();
     }
-    if(darkem) {
-      this.darkem();
+    if(darkem>0) {
+      const styles = Settings.readStorage(this.storeKey);
+      if(styles) {
+        this.styles = Elements.createStylesFromText(styles, this.className);
+        this.isDark = true;
+        this.isMutating = true;
+        this.addStyles();
+        setTimeout(() => this.isMutating = false, 1);
+      }
     }
   }
-  darkem(animate) {
-    this.isDark = true;
-    this.isMutating = true;
-    this.colors = {
-      ...this.colors, 
-      ...Colors.colorsInElement(this.root, this.className, this.brightThreshold, this.darkThreshold)
-    };
-    Styles.addStylesToElement(this.root, 
+  getStyles() {
+    this.styles = Elements.createStylesForElement(this.root, 
       this.className,
-      this.colors,
       this.background_props, 
       this.exclude_elements, 
       this.darkThreshold, 
       this.brightThreshold,
       this.offset,
-      animate ?? this.animate
-    );
+      this.animate);
+  }
+  addStyles() {
+    if(!this.styles) return;
+    document.head.append(this.styles);
+  }
+  removeStyles() {
+    if(!this.styles) return;
+    this.styles.remove();
+  }
+  darkem(animate) {
+    this.isDark = true;
+    this.isMutating = true;
+    this.removeStyles();
+    this.getStyles();
+    this.addStyles();
     setTimeout(() => this.isMutating = false, 1);
-    Settings.writeCookie(this.cookieKey, 1);
+    Settings.writeCookie(this.storeKey, 1);
+    Settings.writeStorage(this.storeKey, this.styles.getText());
   }
   darkemnt() {
     this.isDark = false;
-    Styles.removeClassesInsideElement(this.root, this.className);
-    this.colors = {};
-    Settings.writeCookie(this.cookieKey, 0);
+    if(this.styles) {
+      this.styles.remove();
+    }
+    Settings.writeCookie(this.storeKey, 0);
   }
   toggle() {
     if(this.isDark) {
@@ -73,7 +88,7 @@ class Darkjs {
       if(this.isNestedMutation(mutation.target)) {
         return;
       }
-    }
+    }    
     this.darkem(false);
   }
   isNestedMutation(element) {

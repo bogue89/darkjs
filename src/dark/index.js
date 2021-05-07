@@ -12,7 +12,9 @@ if(!window.Darkjs) {
     window.Darkjs.callback = window[window.Darkjs.options.callback];
     if(!window.Darkjs.callback) {
         window.Darkjs.callback = function() {
-            document.body.darkjs = new Darkjs(document.body, window.Darkjs.options);
+            if(document.body) {
+                document.body.darkjs = new Darkjs(document.body, window.Darkjs.options);
+            }
         }
     }
     window.Darkjs.callback();
