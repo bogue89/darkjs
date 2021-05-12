@@ -4,95 +4,133 @@ import Elements from './darkjs.elements.js';
 class Darkjs {
   constructor(element, options = {}) {
     this.root = element;
-    this.animate = options.animate ?? true;
-    this.offset = options.offset ?? 10;
-    this.className = options.className || "darkjs";
-    this.storeKey = options.storeKey ?? "darkmode";
-    this.darkThreshold = options.darkThreshold ?? 0.3;
-    this.brightThreshold = options.brightThreshold ?? 0.7;
-    this.background_props = options.backgroundProps ?? ['background-color']
-    this.exclude_elements = options.exclude_elements ?? ['style', 'script', 'img', 'text', 'video', 'audio'];
-    
+    this.options = {
+      mode: options.mode || "device",
+      animate: options.animate ?? true,
+      offset: options.offset ?? 10,
+      className: options.className || "darkjs",
+      storeKey: options.storeKey ?? "darkjs",
+      darkThreshold: options.darkThreshold ?? 0.3,
+      brightThreshold: options.brightThreshold ?? 0.7,
+      background_props: options.backgroundProps ?? ['background-color'],
+      exclude_elements: options.exclude_elements ?? ['style', 'script', 'img', 'text', 'video', 'audio'],
+    };
     this.isDark = false;
-    this.colors = {};
+    this.styles = Elements.createStylesElement(this.options.className);
+    this.modes = {
+      on: 'darkmode on',
+      off: 'darkmode off',
+      custom: 'darkmode state', //stored on cookie
+      device: 'darktheme of device',
+      //unknown: 'same as device device',
+    };
+    document.head.append(this.styles);
+    this.init();
+  }
+  init() {
+    this.addObserver();
+    this.checkStoredState();
+  }
+  addObserver() {
+    if(!this.root) return;
+    this.root.addClass(this.options.className);
     this.observer = new MutationObserver(this.onChange.bind(this));
     this.observer.observe(this.root, {
       attributes: true,
       childList: true,
       subtree: true
     });
-    this.init();
   }
-  init() {
-    this.root.addClass(this.className);
-    let darkem = Settings.readCookie(this.storeKey);
-    if(darkem === null) {
-      darkem = Settings.isDarkmode();
-    }
-    if(darkem>0) {
-      const styles = Settings.readStorage(this.storeKey);
-      if(styles) {
-        this.styles = Elements.createStylesFromText(styles, this.className);
-        this.isDark = true;
-        this.isMutating = true;
-        this.addStyles();
-        setTimeout(() => this.isMutating = false, 1);
+  checkStoredState() {
+    if(this.getDarkState()) {
+      this.isDark = true;
+      const styles = Settings.getState(this.options.storeKey);
+      if(styles) {  
+        this.styles.setHtml(styles);
       }
     }
   }
-  getStyles() {
-    this.styles = Elements.createStylesForElement(this.root, 
-      this.className,
-      this.background_props, 
-      this.exclude_elements, 
-      this.darkThreshold, 
-      this.brightThreshold,
-      this.offset,
-      this.animate);
+  getMode() {
+    const mode = !!this.modes[this.options.mode] ? this.options.mode:"device";
+    return mode;
   }
-  addStyles() {
-    if(!this.styles) return;
-    document.head.append(this.styles);
+  setMode(mode) {
+    const isValidMode = !!this.modes[mode];
+    if(isValidMode) {
+      this.options.mode = mode;
+    }
+    return isValidMode;
   }
-  removeStyles() {
-    if(!this.styles) return;
-    this.styles.remove();
+  getDarkState() {
+    switch(this.getMode()) {
+      case "on":
+        return true;
+        break;
+      case "off":
+        return false;
+        break;
+      case "custom":
+        return !!Settings.getState(this.options.storeKey);
+        break;
+      default:
+        return Settings.isDarkmode();
+        break;
+    }
+  }
+  addStyles(animate) {
+    this.styles.setHtml('');
+    const transition = animate ? Elements.createTransitionForElement(this.root, this.options.className):'';
+    const styles = Elements.createStylesForElement(this.root, 
+      this.options.className,
+      this.options.background_props, 
+      this.options.exclude_elements, 
+      this.options.darkThreshold, 
+      this.options.brightThreshold,
+      this.options.offset);
+    this.styles.addHtml(transition);
+    this.styles.addHtml(styles);
+  }
+  removeStyles(animate) {
+    this.styles.setHtml(animate ? Elements.createTransitionForElement(this.root, this.options.className):'');
   }
   darkem(animate) {
     this.isDark = true;
-    this.isMutating = true;
-    this.removeStyles();
-    this.getStyles();
-    this.addStyles();
-    setTimeout(() => this.isMutating = false, 1);
-    Settings.writeCookie(this.storeKey, 1);
-    Settings.writeStorage(this.storeKey, this.styles.getText());
+    this.root.addClass(`${this.options.className}-on`);
+    this.addStyles(animate ?? this.options.animate);
+    Settings.setState(this.options.storeKey, this.styles.getText());
   }
   darkemnt() {
     this.isDark = false;
-    if(this.styles) {
-      this.styles.remove();
-    }
-    Settings.writeCookie(this.storeKey, 0);
+    this.isMutating = true;
+    this.root.removeClass(`${this.options.className}-on`);
+    this.removeStyles(this.options.animate);    
+    Settings.setState(this.options.storeKey, '');
+    setTimeout(() => this.isMutating = false);
   }
   toggle() {
-    if(this.isDark) {
-      this.darkemnt();
-    } else {
-      this.darkem();
-    }
+    this.setMode(this.getDarkState() ? "off":"on");
+    this.checkState();
   }
-  onChange(mutationsList, observe) {
-    if(!this.isDark || this.isMutating) return;
+  checkState() {
+    this.isMutating = true;
+    if(this.getDarkState()) {
+      this.darkem(!this.isDark);
+    } else {
+      this.darkemnt(this.isDark);
+    }
+    setTimeout(() => this.isMutating = false);
+  }
+  onChange(mutationsList, observe) { 
+    if(this.isMutating) return;
     for(const mutation of mutationsList) {
       if(this.isNestedMutation(mutation.target)) {
         return;
       }
-    }    
-    this.darkem(false);
+    }
+    this.checkState();
   }
   isNestedMutation(element) {
-    return element!=this.root && (element.hasClass(this.className) || this.isNestedMutation(element.parentNode));
+    return element!=this.root && (element.hasClass(this.options.className) || this.isNestedMutation(element.parentNode));
   }
 }
 export default Darkjs;

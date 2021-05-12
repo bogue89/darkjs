@@ -16,6 +16,7 @@ var config = {
       title: 'Darkjs',
       favicon: './src/assets/bat.svg',
       chunks: ['index'],
+      scriptLoading: 'blocking',
     }),
     new WebpackManifestPlugin({
       publicPath: '',

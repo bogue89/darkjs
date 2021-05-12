@@ -16,7 +16,7 @@
     width: 100px;
     height: auto;
 }
-.whatifs .card:not([class*=dk-]):not([class*=darkjs-]) .card-footer .btn .fas {
+.whatifs .card:not(.darkjs-on) .card-footer .btn .fas {
     display: none;
 }
 .whatifs .card .list p {

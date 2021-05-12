@@ -88,7 +88,7 @@ Element.prototype.setHtml = function(html) {
     this.innerHTML = html;
     return this;
 }
-Element.prototype.addText = function(html) {
+Element.prototype.addHtml = function(html) {
     this.innerHTML = this.innerHTML + html;
     return this;
 }

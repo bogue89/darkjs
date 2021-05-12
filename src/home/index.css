@@ -1,6 +1,6 @@
 body .card-preview button::before {
     content: 'Demo';
 }
-body[class*=darkjs-] .card-preview button::before {
+body.darkjs-on .card-preview button::before {
     content: 'Undo';
 }

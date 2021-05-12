@@ -1,5 +1,12 @@
 import '../utils/cookies.js';
 
+function setState(key, val) {
+    writeCookie(key, val ? 1:0);
+    writeStorage(key, val);
+}
+function getState(key) {
+    return readCookie(key) > 0 ? readStorage(key):null;
+}
 function isDarkmode() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
 }
@@ -16,7 +23,7 @@ function readStorage(key) {
     if(typeof(Storage) !== "undefined") {
         return window.localStorage.getItem(key);
     } else {
-        return this.readCookie(key);
+        return readCookie(key);
     }
 }
 function writeStorage(key, val) {
@@ -24,7 +31,7 @@ function writeStorage(key, val) {
     if(typeof(Storage) !== "undefined") {
 		window.localStorage.setItem(key, val);
 	} else {
-        this.writeCookie(key, val);
+        writeCookie(key, val);
     }
 }
-export default {isDarkmode, readCookie, writeCookie, readStorage, writeStorage};
+export default {setState, getState, isDarkmode};

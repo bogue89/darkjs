@@ -23,7 +23,8 @@ const propsExcludes = {
     'props': ['border-top-color', 'border-right-color', 'border-bottom-color', 'border-left-color']
   },
 };
-const propStyle   = "{selector} {\n\t{prop}: {color} !important;\n}\n";
+const propStyle = "{selector} {\n\t{prop}: {color} !important;\n}\n";
+const propTransition = "{selector}.{className} {\n\ttransition: all .1s linear !important;\n}\n";
 
 function getPropsForElement(element) {  
   let filtered = Object.keys(props);
@@ -56,23 +57,29 @@ function createStylesForProps(map, background_props, darkThreshold, brightThresh
     styles += parse(propStyle, { 
       selector: selector.join(",\n"),
       prop: prop,
-      color: map.inverted.toRgba()
+      color: map.inverted.toRgba(),
     });
   })
   return styles;
 }
-function createStylesForColors(colors, className, background_props, darkThreshold, brightThreshold, animated) {
-  const styles = create('style[class='+className+']');
+function createTransitionForElement(element, className) {
+  return parse(propTransition, {
+    selector: element.getPath(),
+    className: className,
+  });
+}
+function createStylesForColors(colors, className, background_props, darkThreshold, brightThreshold) {
+  let styles = "";
   Object.keys(colors).forEach( rgba => {
-    styles.addText(createStylesForProps(colors[rgba], background_props, darkThreshold, brightThreshold, animated))
+    styles += createStylesForProps(colors[rgba], background_props, darkThreshold, brightThreshold);
   });
   return styles;
 }
-function createStylesForElement(colors, className, background_props, darkThreshold, brightThreshold, animated = true) {
-  return createStylesForColors(colors, className, background_props, darkThreshold, brightThreshold, animated);
+function createStylesForElement(colors, className, background_props, darkThreshold, brightThreshold) {
+  return createStylesForColors(colors, className, background_props, darkThreshold, brightThreshold);
 }
-function createStylesFromText(text, className) {
-  return create('style[class='+className+']').setText(text)
+function createStylesElement(className) {
+  return create('style[class='+className+']');
 }
 function getColorStyle(element, prop) {
   const string = element.getStyle(prop);
@@ -82,7 +89,8 @@ function getColorStyle(element, prop) {
   return false;
 }
 export default {
-  createStylesFromText,
+  createTransitionForElement,
+  createStylesElement,
   createStylesForElement,
   getPropsForElement,
   getColorStyle

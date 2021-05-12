@@ -1,21 +1,22 @@
+import _package from '../../package.json';
 import query from '../utils/query.js';
 import Darkjs from './darkjs.js';
 
+const s = document.querySelector(`script[src*="darkjs@${_package.version}.js"]`);
+
+Darkjs.options = query.fromQueryString(s.src.split('?').pop());
+Darkjs.callback = window[Darkjs.options.callback] || function() {
+    if(!Darkjs.default) {
+        Darkjs.default = new Darkjs(null, Darkjs.options);
+    }
+    if(document.body) {
+        Darkjs.default.root = document.body;
+        Darkjs.default.init();
+    } else {
+        setTimeout(Darkjs.callback);
+    }
+};
 if(!window.Darkjs) {
     window.Darkjs = Darkjs;
-    window.Darkjs.options = {};
-    document.querySelectorAll('script').forEach(script => {
-        if(/\/darkjs[\@\d\.]*\.js\?/.test(script.src)) {
-            window.Darkjs.options = {...window.Darkjs.options, ...query.fromQueryString(script.src.split('?').pop())}
-        }
-    });
-    window.Darkjs.callback = window[window.Darkjs.options.callback];
-    if(!window.Darkjs.callback) {
-        window.Darkjs.callback = function() {
-            if(document.body) {
-                document.body.darkjs = new Darkjs(document.body, window.Darkjs.options);
-            }
-        }
-    }
-    window.Darkjs.callback();
 }
+window.Darkjs.callback(Darkjs, Darkjs.options);

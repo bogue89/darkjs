@@ -43,19 +43,22 @@ function importDarkjs() {
     lib: `/darkjs@${_package.version}.js`,
     query: query.toQueryString({
       callback: 'darkcall',
+      mode:'custom',
     })
   }));
   return darklib;
 }
-function darkcall() {
+window.darkcall = function() {
   let cards = document.querySelectorAll('.whatifs .card');
   cards.forEach((card, n) => {
     card.darkjs = new Darkjs(card, {
+      mode: 'custom',
       storeKey: `darkmode-card-${n}`,
     });
   });
   //dark initialization
-  document.body.darkjs = new Darkjs(document.body);
+  document.body.darkjs = new Darkjs(document.body, {
+    mode: 'custom',
+  });
 }
-window.darkcall = darkcall;
 document.head.append(importDarkjs());

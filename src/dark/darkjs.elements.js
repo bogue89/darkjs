@@ -1,12 +1,26 @@
 import Colors from './darkjs.colors.js';
 import Styles from './darkjs.styles.js';
 
-function createStylesFromText(text, className) {
-    return Styles.createStylesFromText(text, className);
+function createTransitionForElement(element, className) {
+  return Styles.createTransitionForElement(element, className);
 }
-function createStylesForElement(element, className, background_props, exclude_elements, darkThreshold, brightThreshold, offset, animate) {
-  const colors = getPropColorsForElement(element, className, exclude_elements, darkThreshold, brightThreshold, {}, offset);
-  const styles = getStylesForColors(colors, className, background_props, darkThreshold, brightThreshold, animate);
+function createStylesElement(className) {
+  return Styles.createStylesElement(className);
+}
+function createStylesForElement(element, className, background_props, exclude_elements, darkThreshold, brightThreshold, offset, animate) {  
+  const styles = getStylesForColors(
+    getPropColorsForElement(element,
+      className,
+      exclude_elements,
+      darkThreshold,
+      brightThreshold,
+      {},
+      offset),
+    className,
+    background_props,
+    darkThreshold,
+    brightThreshold,
+    animate);
   return styles;
 }
 function getStylesForColors(colors, className, background_props, darkThreshold, brightThreshold, animate) {
@@ -14,15 +28,15 @@ function getStylesForColors(colors, className, background_props, darkThreshold, 
 }
 
 function getPropColorsForElement(element, className, exclude_elements, darkThreshold, brightThreshold, colors, offset) {
-    return getFilterPropColors(
-        getAllPropColorsForElement(
-            element, 
-            className, 
-            exclude_elements, 
-            colors,
-            offset), 
-        darkThreshold, 
-        brightThreshold);
+  return getFilterPropColors(
+    getAllPropColorsForElement(
+        element, 
+        className, 
+        exclude_elements, 
+        colors,
+        offset), 
+    darkThreshold, 
+    brightThreshold);
 }
 function getFilterPropColors(colors, darkThreshold, brightThreshold) {
   let filtered = {};
@@ -42,7 +56,8 @@ function getAllPropColorsForElement(element, className, exclude_elements, colors
     const color = colorMap(colors, string, offset);
     const elements = elementsMap(color.elements, prop);
     elements.push(element);
-  })
+  });
+  
   const children = element.children;
   for(let i=0; i<children.length; i++) {
     const child = children[i];
@@ -69,6 +84,7 @@ function elementsMap(elements, prop) {
   return elements[prop];
 }
 export default {
+  createTransitionForElement,
   createStylesForElement,
-  createStylesFromText
+  createStylesElement,
 };
