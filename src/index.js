@@ -48,7 +48,7 @@ function importDarkjs() {
   }));
   return darklib;
 }
-window.darkcall = function() {
+window.darkcall = function(Darkjs, options) {
   let cards = document.querySelectorAll('.whatifs .card');
   cards.forEach((card, n) => {
     card.darkjs = new Darkjs(card, {
