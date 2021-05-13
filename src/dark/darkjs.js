@@ -10,8 +10,8 @@ class Darkjs {
       offset: options.offset ?? 10,
       className: options.className || "darkjs",
       storeKey: options.storeKey ?? "darkjs",
-      darkThreshold: options.darkThreshold ?? 0.3,
-      brightThreshold: options.brightThreshold ?? 0.7,
+      darkThreshold: options.darkThreshold ?? 30,
+      brightThreshold: options.brightThreshold ?? 70,
       background_props: options.backgroundProps ?? ['background-color'],
       exclude_elements: options.exclude_elements ?? ['style', 'script', 'img', 'text', 'video', 'audio'],
     };
