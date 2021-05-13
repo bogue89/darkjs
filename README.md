@@ -3,7 +3,7 @@ darkjs
 
 An auto-generated darktheme styling with js import using webpack as dev enviroment.
 
-## Quick start
+## Quick start
 
 [Demo](https://darkjs.pewpew.mx/) page shows you how to create a dark theme for your website. This project generates a script you can just import in the `<head>` tag with optional configuration.
 
@@ -33,7 +33,7 @@ You can pass configuration options in the url, or just specify a callback functi
 
 Then visit `http://localhost:8080` to see the [demo](https://darkjs.pewpew.mx/) page.
 
-### Options
+### Config Options
 You can pass a hash of configuration options to `html-webpack-plugin`.
 Allowed values are as follows:
 
