@@ -1,16 +1,20 @@
 {
-  "name": "dark.js",
+  "name": "darkjs",
   "version": "1.0.1",
-  "description": "",
-  "private": true,
+  "description": "An auto-generated darktheme styling with js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
     "dist": "webpack --mode=production",
     "dev": "webpack serve"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "darkjs",
+    "dark.js",
+    "darktheme",
+    "darkmode"
+  ],
+  "author": "Jorge Benavides",
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^5.2.0",
@@ -24,7 +28,6 @@
     "webpack-nano": "^1.1.1"
   },
   "dependencies": {
-    "file-reader": "^1.1.1",
     "highlight.js": "^10.7.2"
   }
 }
