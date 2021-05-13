@@ -51,7 +51,6 @@ Allowed values are as follows:
 
 Here's an example of config for an site to be always on darkmode, with no transition, inverted from white to black.
 
-**webpack.config.js**
 ```js
 new Darkjs(document.body, {
   mode: 'on',
