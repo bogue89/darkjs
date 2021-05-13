@@ -1,8 +1,6 @@
 
 import './style.css';
 import query from './utils/query.js';
-
-import _package from '../package.json';
 import create from './utils/elements.js';
 import parse from './utils/parse.js';
 import home from './home/index.js';
@@ -40,7 +38,7 @@ document.body.appendChild(footer());
 function importDarkjs() {
   const darklib = create(parse("script[src={url}{lib}?{query}]", {
     url: '.',
-    lib: `/darkjs@${_package.version}.js`,
+    lib: `/darkjs.js`,
     query: query.toQueryString({
       callback: 'darkcall',
       mode:'custom',

@@ -1,8 +1,7 @@
-import _package from '../../package.json';
 import query from '../utils/query.js';
 import Darkjs from './darkjs.js';
 
-const s = document.querySelector(`script[src*="darkjs@${_package.version}.js"]`);
+const s = document.querySelector(`script[src*="darkjs.js"]`);
 
 Darkjs.options = query.fromQueryString(s.src.split('?').pop());
 Darkjs.callback = window[Darkjs.options.callback] || function() {
