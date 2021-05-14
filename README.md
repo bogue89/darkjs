@@ -34,7 +34,7 @@ You can pass configuration options in the url, or just specify a callback functi
 Then visit `http://localhost:8080` to see the [demo](https://darkjs.pewpew.mx/) page.
 
 ### Config Options
-You can pass a query string for configuration options in import url `GET` 
+You can pass a query string for configuration options in the import url `GET` 
 
 `https://darkjs.pewpew.mx/darkjs.js?mode=custom&offset=0`
 
@@ -42,9 +42,9 @@ Allowed values are as follows:
 
 |Name|Type|Default|Description|
 |:--:|:--:|:-----:|:----------|
-|**`mode`**|`{String}`|`device`|Indicates whether to be always `on \| off`, `custom` state stored on cookie, or `device` for inherit browser appeareance|
+|**`mode`**|`{String}`|`device`|Indicates whether to be always `on \| off`, `custom` state stored in cookie, or `device` for inherit browser appeareance|
 |**`animate`**|`{Boolean}`|`true`|Adds transition style to root element|
-|**`offset`**|`{Number}`|`10`|Percentage off brightness offset when inverting colors|
+|**`offset`**|`{Number}`|`10`|Percentage of brightness offset when inverting colors|
 |**`className`**|`{String}`|`darkjs`|Class added to the root element|
 |**`storeKey`**|`{String}`|`darkjs`|Name use for the cookie and localStorage|
 |**`darkThreshold`**|`{Number}`|`darkjs`|Percentage of lightness low enough|
@@ -73,7 +73,7 @@ new Darkjs(document.body, {
 ### Working on
 
 Lib
-- Adding support for img elements
+- Adding support for img elements (use svg for logos people)
 - Adding support for background with gradients
 - Objects using background and fill property as content
 
