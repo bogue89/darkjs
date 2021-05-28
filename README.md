@@ -1,7 +1,7 @@
 Darkjs
 -
 
-An auto-generated darktheme styling with js import using webpack as dev enviroment. This is a test
+An auto-generated darktheme styling with js import using webpack as dev enviroment. This is a test. This is the second test
 
 ## Quick start
 
