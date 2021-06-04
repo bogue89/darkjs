@@ -1,11 +1,11 @@
 Darkjs
 -
 
-An auto-generated darktheme styling with js import using webpack as dev enviroment. This is a test. This is the second test
+Darkjs is an auto-generated dark theme styling with JavaScript import that uses webpack as developer enviroment.
 
 ## Quick start
 
-[Demo](https://darkjs.pewpew.mx/) page shows you how to create a dark theme for your website. This project generates a script you can just import in the `<head>` tag with optional configuration.
+Visit the [demo](https://darkjs.pewpew.mx/) website and learn how to create a dark theme for your website. This project generates a script that can be imported in the `<head>` tag with optional configuration.
 
 ### JS
 
@@ -25,15 +25,16 @@ You can pass configuration options in the url, or just specify a callback functi
 </head>
 ```
 
-## Installation
+## Installation  
+To install Darkjs, follow the below steps:
 
 1. Clone this repo: `git clone https://github.com/bogue89/darkjs.git`
 2. Install with [npm](https://www.npmjs.com/): `npm install`
 3. Run `npm run dev`
 
-Then visit `http://localhost:8080` to see the [demo](https://darkjs.pewpew.mx/) page.
+>**Note:** After instalattion is complete, visit `http://localhost:8080` to see the [demo](https://darkjs.pewpew.mx/) website.
 
-### Config Options
+### Configuration Options
 You can pass a query string for configuration options in the import url `GET` 
 
 `https://darkjs.pewpew.mx/darkjs.js?mode=custom&offset=0`
